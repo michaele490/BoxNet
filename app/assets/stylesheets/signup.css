@@ -1,0 +1,33 @@
+.signup{
+    border: 2px solid black;
+    height: 150px;
+    border-radius: 17px;
+    margin-top: 15px;
+    height: 92%;
+    width: 83%;
+    margin-left: auto;
+    margin-right:  auto;
+}
+
+.signup-header{
+    color: #A30000;
+    font-weight: bold;
+    margin-top: 8px;
+    padding-bottom: 7px;
+    border-bottom: 1.5px solid #726f6f;
+}
+
+.account_description li{
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.signup_btn{
+    background-color: #BA0404;
+    height: 55px;
+    width: 120px;
+    border-radius: 12px;
+    font-weight: bold;
+    border: none;
+    color: white;
+}

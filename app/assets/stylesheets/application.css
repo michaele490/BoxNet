@@ -34,7 +34,7 @@ body{
     text-align: center;
 }
 
-#row-1{
+.container-fluid{
     margin-top: 50px;
 }
 
