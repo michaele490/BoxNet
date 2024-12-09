@@ -7,6 +7,7 @@
     width: 83%;
     margin-left: auto;
     margin-right:  auto;
+    background-color: white;
 }
 
 .signup-header{
@@ -28,6 +29,5 @@
     width: 120px;
     border-radius: 12px;
     font-weight: bold;
-    border: none;
     color: white;
 }

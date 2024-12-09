@@ -21,12 +21,28 @@
   </head>
 
   <body>
-    <nav class="navbar">
+    <!--<nav class="navbar">
       <div class="col-md-2">
           <%= image_tag "logo_no_background.png", alt: "Website Logo" %>
       </div>
       <div class="col-md-10">
 
+      </div>
+    </nav>-->
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="navbar-logo">
+          <%= image_tag "logo_no_background.png", alt: "Website Logo" %>
+        </a>
+      </div>
+      <div class="navbar-right">
+        <a href="#" class="navbar-link">Enter boxer name</a>
+        <a href="#" class="navbar-link">Results</a>
+        <a href="#" class="navbar-link">Fixtures</a>
+        <a href="#" class="navbar-link">Prediction Leaderboards</a>
+        <a href="#" class="navbar-link">Rankings</a>
+        <a href="#" class="navbar-link">Boxers</a>
+        <%= link_to "Sign Up", signup_path, class: "navbar-link" %>
       </div>
     </nav>
     <%= yield %>
