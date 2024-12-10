@@ -53,7 +53,7 @@ body{
   }
   
   .navbar-link:hover {
-    color: #ccc;
+    color: red;
   }
 
 /*.first{
