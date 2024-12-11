@@ -1,0 +1,2 @@
+class Spectator < User
+end

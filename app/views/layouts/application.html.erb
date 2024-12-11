@@ -35,19 +35,37 @@
           <%= image_tag "logo_no_background.png", alt: "Website Logo" %>
         <% end %>
       </div>
-      <div>
-          <%= link_to "Enter boxer name", "#", class: "navbar-link" %>
-          <%= link_to "Results", "#", class: "navbar-link" %>
-          <%= link_to "Fixtures", "#", class: "navbar-link" %>
-          <%= link_to "Prediction Leaderboards", "#", class: "navbar-link" %>
-          <%= link_to "Rankings", "#", class: "navbar-link" %>
-          <%= link_to "Boxers", "#", class: "navbar-link" %>
+      <div class="navbar-item">
+        <%= link_to "Enter boxer name", "#", class: "navbar-link" %>
+        <%= link_to "Results", "#", class: "navbar-link" %>
+        <%= link_to "Fixtures", "#", class: "navbar-link" %>
+        <%= link_to "Prediction Leaderboards", "#", class: "navbar-link" %>
+        <%= link_to "Rankings", "#", class: "navbar-link" %>
+        <%= link_to "Boxers", "#", class: "navbar-link" %>
+
         <% if boxer_user_signed_in? %>
           <span class="navbar-link">Welcome, <%= current_boxer_user.username %></span>
           <%= link_to "Sign Out", destroy_boxer_user_session_path, method: :delete, class: "navbar-link" %>
+        
+        <% elsif coach_user_signed_in? %>
+          <span class="navbar-link">Welcome, <%= current_coach_user.username %></span>
+          <%= link_to "Sign Out", destroy_coach_user_session_path, method: :delete, class: "navbar-link" %>
+        
+        <% elsif spectator_user_signed_in? %>
+          <span class="navbar-link">Welcome, <%= current_spectator_user.username %></span>
+          <%= link_to "Sign Out", destroy_spectator_user_session_path, method: :delete, class: "navbar-link" %>
+        
         <% else %>
+          <!-- Sign In Dropdown -->
+          <div class="dropdown">
+            <button class="dropdown-button">Sign In</button>
+            <div class="dropdown-content">
+              <%= link_to "Boxer", new_boxer_user_session_path, class: "navbar-link" %>
+              <%= link_to "Coach", new_coach_user_session_path, class: "navbar-link" %>
+              <%= link_to "Spectator", new_spectator_user_session_path, class: "navbar-link" %>
+            </div>
+          </div>
           <%= link_to "Sign Up", signup_path, class: "navbar-link" %>
-          <%= link_to "Sign In", new_boxer_user_session_path, class: "navbar-link"%>
         <% end %>
       </div>
     </nav>
