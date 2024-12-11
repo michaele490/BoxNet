@@ -3,4 +3,6 @@ class CoachUser < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  has_one :coach_profile, dependent: :destroy
 end
