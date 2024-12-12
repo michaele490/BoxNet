@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_11_143202) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_12_015904) do
   create_table "boxer_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -35,7 +35,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_11_143202) do
     t.integer "boxer_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "coach_user_id"
+    t.string "first_name"
+    t.string "last_name"
     t.index ["boxer_user_id"], name: "index_boxers_on_boxer_user_id"
+    t.index ["coach_user_id"], name: "index_boxers_on_coach_user_id"
   end
 
   create_table "coach_users", force: :cascade do |t|
@@ -60,6 +64,21 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_11_143202) do
     t.index ["coach_user_id"], name: "index_coaches_on_coach_user_id"
   end
 
+  create_table "editor_users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_editor_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_editor_users_on_reset_password_token", unique: true
+  end
+
   create_table "spectator_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -77,5 +96,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_11_143202) do
   end
 
   add_foreign_key "boxers", "boxer_users"
+  add_foreign_key "boxers", "coach_users"
   add_foreign_key "coaches", "coach_users"
 end

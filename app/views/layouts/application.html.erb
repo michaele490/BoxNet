@@ -54,6 +54,10 @@
         <% elsif spectator_user_signed_in? %>
           <span class="navbar-link">Welcome, <%= current_spectator_user.username %></span>
           <%= link_to "Sign Out", destroy_spectator_user_session_path, method: :delete, class: "navbar-link" %>
+          
+        <% elsif editor_user_signed_in? %>
+          <span class="navbar-link">Welcome, <%= current_editor_user.username %></span>
+          <%= link_to "Sign Out", destroy_editor_user_session_path, method: :delete, class: "navbar-link" %>
         
         <% else %>
           <!-- Sign In Dropdown -->
@@ -63,6 +67,7 @@
               <%= link_to "Boxer", new_boxer_user_session_path, class: "navbar-link" %>
               <%= link_to "Coach", new_coach_user_session_path, class: "navbar-link" %>
               <%= link_to "Spectator", new_spectator_user_session_path, class: "navbar-link" %>
+              <%= link_to "Editor", new_editor_user_session_path, class: "navbar-link" %>
             </div>
           </div>
           <%= link_to "Sign Up", signup_path, class: "navbar-link" %>
