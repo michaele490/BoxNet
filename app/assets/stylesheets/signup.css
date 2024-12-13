@@ -8,6 +8,8 @@
     margin-left: auto;
     margin-right:  auto;
     background-color: white;
+    display: flex;
+    flex-direction: column;
 }
 
 .signup-header{
@@ -25,9 +27,12 @@
 
 .signup_btn{
     background-color: #BA0404;
-    height: 55px;
-    width: 120px;
-    border-radius: 12px;
-    font-weight: bold;
+    height: 65px;
+    border-radius: 8px;
+    text-decoration: none;
+    width: 115px;
+    border: none;
     color: white;
+    font-weight: bold;
+    margin-top: auto;
 }
