@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # Paths
   root "main#index"
   get "/signup", to: "main#sign_up"
+  get "/results", to: "main#results"
   get "/coach", to: "users/coach_users#assign_boxers", as: :assign_boxers
 
   # Resources

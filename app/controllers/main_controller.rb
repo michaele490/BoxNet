@@ -4,4 +4,7 @@ class MainController < ApplicationController
 
     def sign_up
     end
+
+    def results
+    end
 end
