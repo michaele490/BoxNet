@@ -41,8 +41,8 @@
         <% end %>
         <%= link_to "Results", results_path, class: "navbar-button" %>
         <%= link_to "Fixtures", "#", class: "navbar-button" %>
-        <%= link_to "Rankings", "#", class: "navbar-button" %>
         <%= link_to "Boxers", "#", class: "navbar-button" %>
+        <%= link_to "Rankings", "#", class: "navbar-button" %>
         <%= link_to "Prediction Leaderboards", "#", class: "navbar-button" %>
         <% if boxer_user_signed_in? %>
           <span class="navbar-link">Boxer | <%= current_boxer_user.username %></span>
@@ -76,5 +76,6 @@
 
     </nav>
     <%= yield %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
