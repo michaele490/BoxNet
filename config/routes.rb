@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   root "main#index"
   get "/signup", to: "main#sign_up"
   get "/results", to: "main#results"
+  get "/fixtures", to: "main#fixtures"
   get "/coach", to: "users/coach_users#assign_boxers", as: :assign_boxers
 
   # Resources
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # These lines allow for sessions to end, i.e, log outs
   devise_scope :boxer_user do
     get "/boxer_users/sign_out" => "devise/sessions#destroy"
   end

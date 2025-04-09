@@ -7,4 +7,7 @@ class MainController < ApplicationController
 
     def results
     end
+
+    def fixtures
+    end
 end

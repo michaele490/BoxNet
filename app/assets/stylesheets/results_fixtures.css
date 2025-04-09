@@ -29,7 +29,7 @@
   align-items: center;
   justify-content: center;
   gap: 25px;
-  overflow-x: auto;
+  overflow: visible;
   scrollbar-width: none;
 }
 
@@ -58,6 +58,10 @@
   background-color: white !important;
   color: black !important;
   border-radius: 0 !important;
+}
+
+.no-results{
+  margin-top: 40px;
 }
 
 /*#div-view{
