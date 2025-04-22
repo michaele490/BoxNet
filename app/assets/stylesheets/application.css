@@ -58,6 +58,7 @@ nav {
 .navbar-button:hover {
   /*background-color: rgba(186, 4, 4, 0.9);*/
   background-color: #BA0404;
+  transition: 0.3s;
 }
 
 .in_out-btn{

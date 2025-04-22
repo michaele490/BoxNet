@@ -1,5 +1,5 @@
 =begin
-class Users::CoachUsersController < ApplicationController
+class Users::CoachesController < ApplicationController
   def assign_boxer
     @boxer = Boxer.find(params[:id])
     if @boxer.coach.nil? # Ensure the boxer isn't already assigned

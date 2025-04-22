@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :editor_users, controllers: { registrations: "users/registrations" }
-  devise_for :spectator_users, controllers: { registrations: "users/registrations" }
+  devise_for :editors, controllers: { registrations: "users/registrations" }
+  devise_for :spectators, controllers: { registrations: "users/registrations" }
   devise_for :coaches, controllers: { registrations: "users/registrations" }
   devise_for :boxers, controllers: { registrations: "users/registrations" }
 
@@ -21,17 +21,17 @@ Rails.application.routes.draw do
   end
 
   # These lines allow for sessions to end, i.e, log outs
-  devise_scope :boxers do
+  devise_scope :boxer do
     get "/boxers/sign_out" => "devise/sessions#destroy"
   end
-  devise_scope :coaches do
+  devise_scope :coach do
     get "/coaches/sign_out" => "devise/sessions#destroy"
   end
-  devise_scope :spectator_user do
-    get "/spectator_users/sign_out" => "devise/sessions#destroy"
+  devise_scope :spectator do
+    get "/spectators/sign_out" => "devise/sessions#destroy"
   end
-  devise_scope :editor_user do
-    get "/editor_users/sign_out" => "devise/sessions#destroy"
+  devise_scope :editor do
+    get "/editors/sign_out" => "devise/sessions#destroy"
   end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

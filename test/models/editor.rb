@@ -1,6 +1,6 @@
 require "test_helper"
 
-class BoxerTest < ActiveSupport::TestCase
+class EditorTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

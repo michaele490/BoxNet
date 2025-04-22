@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_22_152027) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_22_155135) do
   create_table "boxers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -46,7 +46,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_22_152027) do
     t.index ["reset_password_token"], name: "index_coaches_on_reset_password_token", unique: true
   end
 
-  create_table "editor_users", force: :cascade do |t|
+  create_table "editors", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -57,11 +57,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_22_152027) do
     t.string "username"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_editor_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_editor_users_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_editors_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_editors_on_reset_password_token", unique: true
   end
 
-  create_table "spectator_users", force: :cascade do |t|
+  create_table "spectators", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -72,8 +72,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_22_152027) do
     t.string "first_name"
     t.string "last_name"
     t.string "username"
-    t.index ["email"], name: "index_spectator_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_spectator_users_on_reset_password_token", unique: true
-    t.index ["username"], name: "index_spectator_users_on_username", unique: true
+    t.index ["email"], name: "index_spectators_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_spectators_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_spectators_on_username", unique: true
   end
 end
