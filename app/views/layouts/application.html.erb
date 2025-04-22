@@ -31,7 +31,7 @@
     <nav class="navbar">
   
       <%= link_to root_path do %>
-        <%= image_tag "logo_no_background.png", alt: "Website Logo" %>
+        <%= image_tag "logo_w_fix_no_bg.png", alt: "Website Logo", height: 100, width: 185 %>
       <% end %>
         <%= form_with(url: root_path, method: :get, local: true, html: { class: "navbar-link" }) do %>
           <%= text_field_tag :query, params[:query], placeholder: "Enter boxer name" %>
@@ -42,13 +42,13 @@
         <%= link_to "Boxers", "#", class: "navbar-button" %>
         <%= link_to "Rankings", "#", class: "navbar-button" %>
         <%= link_to "Prediction Leaderboards", "#", class: "navbar-button" %>
-        <% if boxer_user_signed_in? %>
-          <span class="navbar-link">Boxer | <%= current_boxer_user.username %></span>
-          <%= link_to "Sign Out", destroy_boxer_user_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+        <% if boxer_signed_in? %>
+          <span class="navbar-link">Boxer | <%= current_boxer.username %></span>
+          <%= link_to "Sign Out", destroy_boxer_session_path, method: :delete, class: "navbar-button in_out-btn" %>
         
-        <% elsif coach_user_signed_in? %>
-          <span class="navbar-button account">Coach | <%= current_coach_user.username %></span>
-          <%= link_to "Sign Out", destroy_coach_user_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+        <% elsif coach_signed_in? %>
+          <span class="navbar-button account">Coach | <%= current_coach.username %></span>
+          <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-button in_out-btn" %>
         
         <% elsif spectator_user_signed_in? %>
           <span class="navbar-link">Spectator | <%= current_spectator_user.username %></span>
@@ -63,8 +63,8 @@
           <div class="dropdown">
             <button class="dropdown-button">Sign In</button>
             <div class="dropdown-content">
-              <%= link_to "Boxer", new_boxer_user_session_path, class: "navbar-link login-options" %>
-              <%= link_to "Coach", new_coach_user_session_path, class: "navbar-link login-options" %>
+              <%= link_to "Boxer", new_boxer_session_path, class: "navbar-link login-options" %>
+              <%= link_to "Coach", new_coach_session_path, class: "navbar-link login-options" %>
               <%= link_to "Spectator", new_spectator_user_session_path, class: "navbar-link login-options" %>
               <%= link_to "Editor", new_editor_user_session_path, class: "navbar-link login-options" %>
             </div>

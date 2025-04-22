@@ -44,7 +44,7 @@ nav {
 }
 
 .navbar-button {
-  background-color: #BA0404; /* Button background color */
+  /*background-color: #BA0404;  Button background color */
   color: white;
   padding: 10px 20px;
   border: none;
@@ -56,7 +56,8 @@ nav {
 }
 
 .navbar-button:hover {
-  background-color: rgba(186, 4, 4, 0.9);
+  /*background-color: rgba(186, 4, 4, 0.9);*/
+  background-color: #BA0404;
 }
 
 .in_out-btn{

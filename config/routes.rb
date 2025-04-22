@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   devise_for :editor_users, controllers: { registrations: "users/registrations" }
   devise_for :spectator_users, controllers: { registrations: "users/registrations" }
-  devise_for :coach_users, controllers: { registrations: "users/registrations" }
-  devise_for :boxer_users, controllers: { registrations: "users/registrations" }
+  devise_for :coaches, controllers: { registrations: "users/registrations" }
+  devise_for :boxers, controllers: { registrations: "users/registrations" }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Paths
@@ -10,22 +10,22 @@ Rails.application.routes.draw do
   get "/signup", to: "main#sign_up"
   get "/results", to: "main#results"
   get "/fixtures", to: "main#fixtures"
-  get "/coach", to: "users/coach_users#assign_boxers", as: :assign_boxers
+  get "/coach", to: "users/coaches#assign_boxers", as: :assign_boxers
 
   # Resources
   namespace :users do
-    resources :coach_users do
+    resources :coaches do
       get "assign_boxers", on: :collection
       post "assign_boxer", on: :collection
     end
   end
 
   # These lines allow for sessions to end, i.e, log outs
-  devise_scope :boxer_user do
-    get "/boxer_users/sign_out" => "devise/sessions#destroy"
+  devise_scope :boxers do
+    get "/boxers/sign_out" => "devise/sessions#destroy"
   end
-  devise_scope :coach_user do
-    get "/coach_users/sign_out" => "devise/sessions#destroy"
+  devise_scope :coaches do
+    get "/coaches/sign_out" => "devise/sessions#destroy"
   end
   devise_scope :spectator_user do
     get "/spectator_users/sign_out" => "devise/sessions#destroy"

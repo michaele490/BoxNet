@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_12_015904) do
-  create_table "boxer_users", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2025_04_22_152027) do
+  create_table "boxers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -22,27 +22,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_015904) do
     t.string "first_name"
     t.string "last_name"
     t.string "username"
-    t.index ["email"], name: "index_boxer_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_boxer_users_on_reset_password_token", unique: true
-  end
-
-  create_table "boxers", force: :cascade do |t|
     t.integer "overall_rating"
     t.integer "defence"
     t.integer "power"
     t.integer "speed"
     t.integer "iq"
-    t.integer "boxer_user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "coach_user_id"
-    t.string "first_name"
-    t.string "last_name"
-    t.index ["boxer_user_id"], name: "index_boxers_on_boxer_user_id"
-    t.index ["coach_user_id"], name: "index_boxers_on_coach_user_id"
+    t.index ["email"], name: "index_boxers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_boxers_on_reset_password_token", unique: true
   end
 
-  create_table "coach_users", force: :cascade do |t|
+  create_table "coaches", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -53,15 +42,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_015904) do
     t.string "first_name"
     t.string "last_name"
     t.string "username"
-    t.index ["email"], name: "index_coach_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_coach_users_on_reset_password_token", unique: true
-  end
-
-  create_table "coaches", force: :cascade do |t|
-    t.integer "coach_user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["coach_user_id"], name: "index_coaches_on_coach_user_id"
+    t.index ["email"], name: "index_coaches_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_coaches_on_reset_password_token", unique: true
   end
 
   create_table "editor_users", force: :cascade do |t|
@@ -94,8 +76,4 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_015904) do
     t.index ["reset_password_token"], name: "index_spectator_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_spectator_users_on_username", unique: true
   end
-
-  add_foreign_key "boxers", "boxer_users"
-  add_foreign_key "boxers", "coach_users"
-  add_foreign_key "coaches", "coach_users"
 end
