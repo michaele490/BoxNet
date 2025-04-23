@@ -26,7 +26,12 @@ nav {
   background-color: black;
   padding: 0 15px;
 }
-  
+
+.navbar-brand {
+  padding: 0;
+  margin: 0;
+}
+
 .navbar-left {
   display: flex;
   align-items: center;
@@ -136,8 +141,8 @@ nav {
   transform: translateX(-50%);
   z-index: 1;
   background-color: #BA0404;
-  width: 160px;
-  min-width: 150px;
+  width: 150px;
+  min-width: 142px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.8);
   border-radius: 6px;
   margin-top: 1px;
@@ -167,4 +172,73 @@ nav {
 /* Ensures sign in link still has bg color when dropdown itemsn are hovered over*/
 .dropdown:hover .dropdown-toggle {
   background-color: #BA0404;
+}
+
+.navbar-toggler {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.25rem;
+  background-color: transparent;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-collapse {
+  flex-basis: 100%;
+  flex-grow: 1;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-button {
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-nav {
+    padding: 0.5rem 0;
+  }
+
+  .navbar-button {
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown-toggle {
+    width: 100%;
+    text-align: left;
+  }
+
+  .dropdown-content {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: 0;
+    box-shadow: none;
+  }
+
+  .in_out-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }

@@ -31,57 +31,52 @@
 
       </div>
     </nav>-->
-    <nav class="navbar">
-  
-      <%= link_to root_path do %>
+    <nav class="navbar navbar-expand-md">
+      <%= link_to root_path, class: "navbar-brand" do %>
         <%= image_tag "logo_w_fix_no_bg.png", alt: "Website Logo", height: 100, width: 185 %>
       <% end %>
 
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars text-white"></i>
+      </button>
 
-        <!-- I intend on changing the style of the search bar and also moving it to the right end instead 
-        <%= form_with(url: root_path, method: :get, local: true, html: { class: "navbar-link" }) do %>
-          <%= text_field_tag :query, params[:query], placeholder: "Enter boxer name" %>
-          <%= submit_tag "Search" %>
-        <% end %>
-        -->
-        <%= link_to "Results", results_path, class: "navbar-button" %>
-        <%= link_to "Fixtures", fixtures_path, class: "navbar-button" %>
-        <%= link_to "Boxers", "#", class: "navbar-button" %>
-        <%= link_to "Rankings", "#", class: "navbar-button" %>
-        <!-- Left out next link, unsure if I have enough time to implement that feature -->
-        <!--<%= link_to "Prediction Leaderboards", "#", class: "navbar-button" %>-->
-        <% if boxer_signed_in? %>
-          <span class="navbar-link">Boxer | <%= current_boxer.username %></span>
-          <%= link_to "Sign Out", destroy_boxer_session_path, method: :delete, class: "navbar-button in_out-btn" %>
-        
-        <% elsif coach_signed_in? %>
-          <span class="navbar-button account">Coach | <%= current_coach.username %></span>
-          <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-button in_out-btn" %>
-        
-        <% elsif spectator_signed_in? %>
-          <span class="navbar-link">Spectator | <%= current_spectator.username %></span>
-          <%= link_to "Sign Out", destroy_spectator_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <div class="navbar-nav w-100 justify-content-between align-items-center">
+          <%= link_to "Results", results_path, class: "navbar-button" %>
+          <%= link_to "Fixtures", fixtures_path, class: "navbar-button" %>
+          <%= link_to "Boxers", "#", class: "navbar-button" %>
+          <%= link_to "Rankings", "#", class: "navbar-button" %>
+
+          <% if boxer_signed_in? %>
+            <span class="navbar-link">Boxer | <%= current_boxer.username %></span>
+            <%= link_to "Sign Out", destroy_boxer_session_path, method: :delete, class: "navbar-button in_out-btn" %>
           
-        <% elsif editor_signed_in? %>
-          <span class="navbar-link">Editor | <%= current_editor.username %></span>
-          <%= link_to "Sign Out", destroy_editor_session_path, method: :delete, class: "navbar-button in_out-btn" %>
-        
-        <% else %>
-          <!-- Experimenting sign in button with different style -->
+          <% elsif coach_signed_in? %>
+            <span class="navbar-button account">Coach | <%= current_coach.username %></span>
+            <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-button in_out-btn" %>
           
-          <!-- Sign In Dropdown -->
-          <div class="dropdown">
-            <button class="navbar-button dropdown-toggle" id="signin-dropdown">Sign In</button>
-            <div class="dropdown-content">
-              <%= link_to "Boxer", new_boxer_session_path, class: "navbar-link login-options" %>
-              <%= link_to "Coach", new_coach_session_path, class: "navbar-link login-options" %>
-              <%= link_to "Editor", new_editor_session_path, class: "navbar-link login-options" %>
-              <%= link_to "Spectator", new_spectator_session_path, class: "navbar-link login-options" %>
+          <% elsif spectator_signed_in? %>
+            <span class="navbar-link">Spectator | <%= current_spectator.username %></span>
+            <%= link_to "Sign Out", destroy_spectator_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+            
+          <% elsif editor_signed_in? %>
+            <span class="navbar-link">Editor | <%= current_editor.username %></span>
+            <%= link_to "Sign Out", destroy_editor_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+          
+          <% else %>
+            <div class="dropdown">
+              <button class="navbar-button dropdown-toggle" id="signin-dropdown">Sign In</button>
+              <div class="dropdown-content">
+                <%= link_to "Boxer", new_boxer_session_path, class: "navbar-link login-options" %>
+                <%= link_to "Coach", new_coach_session_path, class: "navbar-link login-options" %>
+                <%= link_to "Editor", new_editor_session_path, class: "navbar-link login-options" %>
+                <%= link_to "Spectator", new_spectator_session_path, class: "navbar-link login-options" %>
+              </div>
             </div>
-          </div>
-          <%= link_to "Sign Up", signup_path, class: "navbar-button in_out-btn" %>
-        <% end %>
-
+            <%= link_to "Sign Up", signup_path, class: "navbar-button in_out-btn" %>
+          <% end %>
+        </div>
+      </div>
     </nav>
     <%= yield %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
