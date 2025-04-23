@@ -7,7 +7,29 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :username ])
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :first_name, :last_name, :username, :overall_rating, :power, :speed, :defence, :iq ])
+    general_keys = [ :first_name, :last_name, :username ]
+
+    devise_parameter_sanitizer.permit(:sign_up, keys: general_keys)
+
+    if devise_resource_class == Boxer
+      boxer_keys = general_keys + [ :overall_rating, :defence, :power, :speed, :iq ]
+      devise_parameter_sanitizer.permit(:account_update, keys: boxer_keys)
+    elsif devise_resource_class == Coach
+      coach_keys = general_keys # Add extra coach variables later
+      devise_parameter_sanitizer.permit(:account_update, keys: coach_keys)
+    elsif devise_resource_class == Editor
+      editor_keys = general_keys # Add extra editor variables later
+      devise_parameter_sanitizer.permit(:account_update, keys: editor_keys)
+    elsif devise_resource_class == Spectator
+      spectator_keys = general_keys # Add extra spectator keys later
+      devise_parameter_sanitizer.permit(:account_update, keys: spectator_keys)
+    end
+  end
+
+  private
+
+  def devise_resource_class
+    resource_class = devise_mapping.to
+    resource_class.is_a?(Class) ? resource_class : resource_class.constantize
   end
 end
