@@ -20,6 +20,10 @@ gem "stimulus-rails"
 gem "jbuilder"
 # Verification for bundler
 gem "bundler-audit"
+# For PostgreSQL database
+gem "pg"
+# For environment variables
+gem "dotenv-rails", groups: [ :development, :test ]
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -50,7 +54,9 @@ group :development, :test do
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "capistrano", "~> 3.19", require: false
+  gem "capistrano-rails", require: false
+  gem "capistrano-rbenv", require: false
   gem "web-console"
 end
 
