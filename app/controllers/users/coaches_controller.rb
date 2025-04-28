@@ -1,4 +1,3 @@
-=begin
 class Users::CoachesController < ApplicationController
   def assign_boxer
     @boxer = Boxer.find(params[:id])
@@ -10,7 +9,7 @@ class Users::CoachesController < ApplicationController
     end
   end
 end
-=end
+
 
 module Users
   class CoachesController < ApplicationController
