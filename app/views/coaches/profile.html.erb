@@ -1,0 +1,139 @@
+<div class="container-fluid py-4">
+  <div class="text-center mb-4">
+    <h1 class="mb-2"><%= @coach.full_name %></h1>
+    <div class="red-underline"></div>
+  </div>
+  
+  <div class="row">
+    <!-- Boxers Section -->
+    <div class="col-md-4">
+      <h2 class="h4 mb-3">Boxers</h2>
+      
+      <% if @coach.boxers.any? %>
+        <div class="card mb-3">
+          <div class="card-body p-0">
+            <div class="boxer-list" style="max-height: 400px; overflow-y: auto;">
+              <% @coach.boxers.each do |boxer| %>
+                <div class="boxer-item p-3 border-bottom">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="mb-1"><%= boxer.full_name %></h5>
+                      <small class="text-muted">Rating: <%= boxer.overall_rating || 'N/A' %></small>
+                    </div>
+                    <%= link_to "#", class: "btn btn-sm btn-outline-primary" do %>
+                      <i class="fas fa-eye"></i> View
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <p class="text-muted fst-italic mb-3">No boxers added</p>
+      <% end %>
+      <%= link_to "Add New Boxers", assign_boxers_path, class: "btn btn-danger" %>
+    </div>
+
+    <!-- Upcoming Fights Section -->
+    <div class="col-md-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Upcoming Fights</h2>
+      </div>
+      
+      <%# Placeholder for upcoming fights while it is empty %>
+      <div class="card">
+        <div class="card-body p-0">
+          <div class="upcoming-fights-list" style="max-height: 400px; overflow-y: auto;">
+            <% 5.times do |i| %>
+              <div class="fight-item p-3 border-bottom">
+                <h5 class="mb-2">Sample Boxer vs Opponent <%= i + 1 %></h5>
+                <div class="text-muted">
+                  <small><i class="fas fa-calendar"></i> <%= (Date.today + i.weeks).strftime("%B %d, %Y") %></small>
+                  <br>
+                  <small><i class="fas fa-map-marker-alt"></i> Sample Venue <%= i + 1 %></small>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="col-md-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Recent Results</h2>
+        <%= link_to "View All Results", "#", class: "btn btn-link text-danger p-0" %>
+      </div>
+      
+      <%# Placeholder for results while it is empty %>
+      <div class="card">
+        <div class="card-body p-0">
+          <div class="results-list" style="max-height: 400px; overflow-y: auto;">
+            <% 5.times do |i| %>
+              <div class="result-item p-3 border-bottom">
+                <h5 class="mb-2">Sample Boxer vs Past Opponent <%= i + 1 %></h5>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="text-muted">
+                    <small><%= (Date.today - i.weeks).strftime("%B %d, %Y") %></small>
+                  </div>
+                  <span class="badge <%= i.even? ? 'bg-success' : 'bg-danger' %>">
+                    <%= i.even? ? 'Win' : 'Loss' %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .red-underline {
+      height: 2px;
+      background-color: #dc3545;
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    .boxer-list, .upcoming-fights-list, .results-list {
+      scrollbar-width: thin;
+      scrollbar-color: #dc3545 #f8f9fa;
+    }
+    
+    .boxer-list::-webkit-scrollbar,
+    .upcoming-fights-list::-webkit-scrollbar,
+    .results-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .boxer-list::-webkit-scrollbar-track,
+    .upcoming-fights-list::-webkit-scrollbar-track,
+    .results-list::-webkit-scrollbar-track {
+      background: #f8f9fa;
+    }
+    
+    .boxer-list::-webkit-scrollbar-thumb,
+    .upcoming-fights-list::-webkit-scrollbar-thumb,
+    .results-list::-webkit-scrollbar-thumb {
+      background-color: #dc3545;
+      border-radius: 3px;
+    }
+
+    .boxer-item:hover,
+    .fight-item:hover,
+    .result-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .boxer-item:last-child,
+    .fight-item:last-child,
+    .result-item:last-child {
+      border-bottom: none !important;
+    }
+  </style>
+<% end %> 

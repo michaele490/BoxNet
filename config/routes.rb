@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   get "/signup", to: "main#sign_up"
   get "/results", to: "main#results"
   get "/fixtures", to: "main#fixtures"
-  get "/coach", to: "users/coaches#assign_boxers", as: :assign_boxers
+  get "/coach_profile", to: "coaches#profile", as: :coach_profile
+  get "/coach", to: "coaches#assign_boxers", as: :assign_boxers
 
   # Resources
   namespace :users do
