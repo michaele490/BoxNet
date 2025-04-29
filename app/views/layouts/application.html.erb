@@ -48,7 +48,8 @@
           <%= link_to "Rankings", "#", class: "navbar-button" %>
 
           <% if boxer_signed_in? %>
-            <span class="navbar-link">Boxer | <%= current_boxer.username %></span>
+            <!--<span class="navbar-link">Boxer | <%= current_boxer.username %></span>-->
+            <%= link_to current_boxer.full_name, boxer_profile_path(current_boxer.id), class: "navbar-button account" %>
             <%= link_to "Sign Out", destroy_boxer_session_path, method: :delete, class: "navbar-button in_out-btn" %>
           
           <% elsif coach_signed_in? %>

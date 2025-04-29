@@ -1,0 +1,240 @@
+<div class="container-fluid py-4 mb-5">
+  <div class="text-center mb-4">
+    <h1 class="mb-2">Boxer Name</h1>
+    <div class="red-underline"></div>
+  </div>
+
+  <div class="row g-4">
+    <!-- About Section -->
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="section-title">About</h2>
+          <div class="red-underline mb-3"></div>
+          
+          <div class="info-item">
+            <strong>Nickname:</strong> The Apex
+          </div>
+          <div class="info-item">
+            <strong>Nationality:</strong> Ireland
+          </div>
+          <div class="info-item">
+            <strong>Gender:</strong> Male
+          </div>
+          <div class="info-item">
+            <strong>Total Fights:</strong> 22
+          </div>
+          <div class="info-item">
+            <strong>Height:</strong> 1.75m
+          </div>
+          <div class="info-item">
+            <strong>Reach:</strong> 1.88m
+          </div>
+          <div class="info-item">
+            <strong>Division:</strong> Super Light
+          </div>
+        </div>
+      </div>
+
+      <!-- Attributes Section -->
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Attributes</h2>
+          <div class="red-underline mb-3"></div>
+          
+          <div class="attribute-item">
+            <strong>Overall Rating:</strong> 
+            <span><%= @boxer.overall_rating || 'N/A' %></span>
+          </div>
+          <div class="attribute-item">
+            <strong>Power:</strong>
+            <span><%= @boxer.power || 'N/A' %></span>
+          </div>
+          <div class="attribute-item">
+            <strong>Speed:</strong>
+            <span><%= @boxer.speed || 'N/A' %></span>
+          </div>
+          <div class="attribute-item">
+            <strong>IQ:</strong>
+            <span><%= @boxer.iq || 'N/A' %></span>
+          </div>
+          <div class="attribute-item">
+            <strong>Defence:</strong>
+            <span><%= @boxer.defence || 'N/A' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Record Section -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Record</h2>
+          <div class="red-underline mb-4"></div>
+          
+          <div class="record-box wins">
+            <div class="record-number">15 Wins</div>
+            <div class="record-detail">6 KOs</div>
+          </div>
+          
+          <div class="record-box losses">
+            <div class="record-number">5 Losses</div>
+            <div class="record-detail">1 KO</div>
+          </div>
+          
+          <div class="record-box draws">
+            <div class="record-number">2 Draws</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="section-title">Results</h2>
+          <div class="red-underline mb-3"></div>
+          
+          <div class="results-list">
+            <% 5.times do |i| %>
+              <div class="result-item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h5 class="mb-1">Sample Boxer vs Past Opponent <%= i + 1 %></h5>
+                    <small class="text-muted">April <%= 29 - (i * 7) %>, 2025</small>
+                  </div>
+                  <span class="badge <%= i.even? ? 'bg-success' : 'bg-danger' %>">
+                    <%= i.even? ? 'Win' : 'Loss' %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Fights Section -->
+      <div class="card mb-5">
+        <div class="card-body">
+          <h2 class="section-title">Next Fights</h2>
+          <div class="red-underline mb-3"></div>
+          
+          <div class="next-fight-item">
+            <h5>Sample Boxer vs Opponent 1</h5>
+            <div class="fight-details">
+              <span><i class="fas fa-calendar"></i> April 29, 2025</span>
+              <span><i class="fas fa-map-marker-alt ms-3"></i> Sample Venue 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .container-fluid {
+      min-height: calc(100vh - 100px);
+    }
+
+    .red-underline {
+      height: 2px;
+      background-color: #ba0404;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-item, .attribute-item {
+      margin-bottom: 0.75rem;
+    }
+
+    .record-box {
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .record-box.wins {
+      background-color: #28a745;
+    }
+
+    .record-box.losses {
+      background-color: #dc3545;
+    }
+
+    .record-box.draws {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    .record-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .record-detail {
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .results-list .result-item {
+      padding: 1rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .results-list .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .next-fight-item {
+      padding: 1rem 0;
+    }
+
+    .fight-details {
+      color: #6c757d;
+      margin-top: 0.5rem;
+    }
+
+    .badge {
+      padding: 0.5rem 1rem;
+    }
+
+    /* Custom scrollbar for results list */
+    .results-list {
+      max-height: 400px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #ba0404 #f8f9fa;
+    }
+
+    .results-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .results-list::-webkit-scrollbar-track {
+      background: #f8f9fa;
+    }
+
+    .results-list::-webkit-scrollbar-thumb {
+      background-color: #ba0404;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 768px) {
+      .container-fluid {
+        padding-bottom: 2rem;
+      }
+    }
+  </style>
+<% end %>
