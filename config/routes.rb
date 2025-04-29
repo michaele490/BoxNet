@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   get "/results", to: "main#results"
   get "/fixtures", to: "main#fixtures"
   get "/coach_profile", to: "coaches#profile", as: :coach_profile
-  get "/coach", to: "coaches#assign_boxers", as: :assign_boxers
+  get "/assign_boxers", to: "coaches#assign_boxers", as: :assign_boxers
+  post "/send_add_request/:boxer_id", to: "coaches#send_add_request", as: :send_add_request_coach
 
   # Resources
   namespace :users do
