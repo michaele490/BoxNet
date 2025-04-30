@@ -5,35 +5,37 @@
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="card">
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table mb-0">
               <thead class="table-light">
                 <tr>
                   <th>Coach Name</th>
                   <th>Request Date</th>
-                  <th class="text-end">Actions</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 <% if @requests.any? %>
                   <% @requests.each do |request| %>
                     <tr>
-                      <td><%= request.coach.full_name %></td>
+                      <td><%= link_to request.coach.full_name, '#', class: 'coach-link' %></td>
                       <td><%= request.created_at.strftime("%B %d, %Y") %></td>
                       <td class="text-end">
-                        <%= button_to accept_boxer_request_path(request), 
-                            method: :post,
-                            class: 'btn btn-success me-2' do %>
-                          Accept
-                        <% end %>
-                        <%= button_to reject_boxer_request_path(request), 
-                            method: :post,
-                            class: 'btn btn-danger' do %>
-                          Reject
-                        <% end %>
+                        <div class="d-inline-flex gap-2">
+                          <%= button_to accept_boxer_request_path(request), 
+                              method: :post,
+                              class: 'btn btn-success' do %>
+                            Accept
+                          <% end %>
+                          <%= button_to reject_boxer_request_path(request), 
+                              method: :post,
+                              class: 'btn btn-danger' do %>
+                            Reject
+                          <% end %>
+                        </div>
                       </td>
                     </tr>
                   <% end %>
@@ -62,6 +64,16 @@
       margin: 0 auto;
     }
 
+    .coach-link {
+      color: #000 !important;
+      text-decoration: none !important;
+    }
+
+    .coach-link:hover {
+      color: #ba0404 !important;
+      text-decoration: underline !important;
+    }
+
     .table th {
       font-weight: 500;
       border-bottom-width: 1px;
@@ -84,6 +96,21 @@
     .btn {
       padding: 6px 12px;
       font-size: 14px;
+      min-width: 80px;
+    }
+
+    /* Style for the button container */
+    .d-inline-flex {
+      display: inline-flex !important;
+    }
+
+    .gap-2 {
+      gap: 0.5rem !important;
+    }
+
+    /* Remove any margin from the buttons when in flex container */
+    .d-inline-flex .btn {
+      margin: 0 !important;
     }
   </style>
 <% end %> 

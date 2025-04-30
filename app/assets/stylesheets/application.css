@@ -1,15 +1,4 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
  *= require_tree .
  *= require_self
  */
@@ -74,16 +63,6 @@ nav {
 .in_out-btn:hover{
   background-color: #edb708;
 }
-
-.account{
-  background-color: rgb(239, 235, 235);
-  color: black;
-  border-radius: 0px;
-}
-
-.account:hover{
-  background-color: rgb(255, 255, 255);
-}
   
 /*.navbar-link:hover {
   color: red;
@@ -114,6 +93,8 @@ nav {
     margin: auto;
     background-color: white;
 }
+
+/* Dropdown menus */
 
 .dropdown {
   position: relative;
@@ -149,6 +130,22 @@ nav {
   padding: 0;
 }
 
+.account-dropdown-content {
+  color: black;
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  background-color: rgb(239, 235, 235);
+  width: 150px;
+  min-width: 142px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.8);
+  border-radius: 6px;
+  margin-top: 1px;
+  padding: 0;
+}
+
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -169,9 +166,45 @@ nav {
   width: 100%;
 }
 
-/* Ensures sign in link still has bg color when dropdown itemsn are hovered over*/
+.account-dropdown:hover .account-toggle {
+  background-color: rgb(239, 235, 235);
+}
+
+.account{
+  background-color: rgb(239, 235, 235);
+  color: black;
+  border-radius: 0px;
+}
+
+.account:hover{
+  background-color: rgb(239, 235, 235);
+  color: black;
+  border-radius: 0px;
+}
+
+.account-options {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  transition: background-color 0.3s ease;
+  margin: 0;
+}
+
+.account-options:hover {
+  background-color: rgb(174, 174, 174);
+  width: 100%;
+}
+
+/* Ensures sign in link still has bg color when dropdown items are hovered over*/
 .dropdown:hover .dropdown-toggle {
   background-color: #BA0404;
+}
+
+.account-dropdown:hover .account {
+  background-color: rgb(239, 235, 235)
 }
 
 .navbar-toggler {

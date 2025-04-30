@@ -19,7 +19,9 @@ class BoxerRequestsController < ApplicationController
     if @request.update(status: :rejected)
       redirect_to boxer_requests_path, notice: 'Request rejected successfully!'
     else
-      redirect_to boxer_requests_path, alert: 'Failed to reject request.'
+      # Redirecting to the root path so I can clearly see if the rejection has failed
+      redirect_to root_path, alert: 'Failed to reject request.'
+      puts "FOR WHATEVER REASON THIS REJECTION HAS FAILED!!!"
     end
   end
 
