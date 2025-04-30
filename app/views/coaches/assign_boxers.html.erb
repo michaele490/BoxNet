@@ -68,7 +68,7 @@
                       <td>N/A</td>
                       <td>N/A</td>
                       <td class="text-end">
-                        <%= button_to send_add_request_coach_path(boxer), 
+                        <%= button_to send_add_request_coach_path(boxer_id: boxer.id), 
                             method: :post,
                             class: 'btn request-btn' do %>
                           Send add request
@@ -104,13 +104,13 @@
       padding: 6px 12px;
     }
 
-    form.request button:hover {
+    /*form.request button:hover {
       background-color: #8b0000;
-    }
+    }*/
 
     .boxer_link:hover {
       color: #ba0404 !important;
-      text-decoration: underline;
+      text-decoration: underline !important;
     }
 
     .red-underline {
@@ -169,8 +169,9 @@
     }
 
     .btn.request-btn:hover {
-      background-color: #8b0000;
-      border-color: #8b0000;
+      opacity: 0.8;
+      background-color: #ba0404;
+      border-color: #ba0404;
       color: white;
     }
   </style>

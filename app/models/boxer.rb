@@ -6,6 +6,7 @@ class Boxer < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :coach, optional: true
+  has_many :boxer_requests, dependent: :destroy
 
   WEIGHT_CLASSES = [
     "minimum",
@@ -27,7 +28,7 @@ class Boxer < ApplicationRecord
     "heavy"
   ]
 
-  validates :weight_class, inclusion: { in: WEIGHT_CLASSES }
+  validates :weight_class, inclusion: { in: WEIGHT_CLASSES }, allow_nil: true
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :username, presence: true, uniqueness: true

@@ -1,6 +1,6 @@
 <div class="container-fluid py-4 mb-5">
   <div class="text-center mb-4">
-    <h1 class="mb-2">Boxer Name</h1>
+    <h1 class="mb-2"><%= @boxer.full_name %></h1>
     <div class="red-underline"></div>
   </div>
 
@@ -23,6 +23,9 @@
           </div>
           <div class="info-item">
             <strong>Total Fights:</strong> 22
+          </div>
+          <div class="info-item">
+            <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "No coach assigned" %>
           </div>
           <div class="info-item">
             <strong>Height:</strong> 1.75m

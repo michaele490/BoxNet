@@ -41,7 +41,12 @@ class CoachesController < ApplicationController
 
   def send_add_request
     @boxer = Boxer.find(params[:boxer_id])
-    # Add request logic will be implemented later
-    redirect_to assign_boxers_path, notice: "Request sent to #{@boxer.full_name}"
+    @request = current_coach.boxer_requests.build(boxer: @boxer)
+
+    if @request.save
+      redirect_to root_path, notice: 'Request sent successfully!'
+    else
+      redirect_to results_path, alert: @request.errors.full_messages.join(', ')
+    end
   end
 end

@@ -1,0 +1,89 @@
+<div class="container-fluid py-4">
+  <div class="text-center mb-4">
+    <h1 class="mb-2">Coach Requests</h1>
+    <div class="red-underline"></div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Coach Name</th>
+                  <th>Request Date</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if @requests.any? %>
+                  <% @requests.each do |request| %>
+                    <tr>
+                      <td><%= request.coach.full_name %></td>
+                      <td><%= request.created_at.strftime("%B %d, %Y") %></td>
+                      <td class="text-end">
+                        <%= button_to accept_boxer_request_path(request), 
+                            method: :post,
+                            class: 'btn btn-success me-2' do %>
+                          Accept
+                        <% end %>
+                        <%= button_to reject_boxer_request_path(request), 
+                            method: :post,
+                            class: 'btn btn-danger' do %>
+                          Reject
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="3" class="text-center py-4 text-muted">
+                      No pending requests
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .red-underline {
+      height: 2px;
+      background-color: #ba0404;
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    .table th {
+      font-weight: 500;
+      border-bottom-width: 1px;
+    }
+
+    .table td {
+      vertical-align: middle;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-danger {
+      background-color: #ba0404;
+      border-color: #ba0404;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  </style>
+<% end %> 

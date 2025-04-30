@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :editors, controllers: { registrations: "users/registrations" }
-  devise_for :spectators, controllers: { registrations: "users/registrations" }
-  devise_for :coaches, controllers: { registrations: "users/registrations" }
-  devise_for :boxers, controllers: { registrations: "users/registrations" }
+  devise_for :editors
+  devise_for :spectators
+  devise_for :coaches
+  devise_for :boxers
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Paths
@@ -46,4 +46,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  resources :boxer_requests, only: [:index] do
+    member do
+      post :accept
+      post :reject
+    end
+  end
 end
