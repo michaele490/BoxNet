@@ -44,9 +44,9 @@ class CoachesController < ApplicationController
     @request = current_coach.boxer_requests.build(boxer: @boxer)
 
     if @request.save
-      redirect_to root_path, notice: 'Request sent successfully!'
+      redirect_to assign_boxers_path, notice: 'Request sent successfully!'
     else
-      redirect_to results_path, alert: @request.errors.full_messages.join(', ')
+      redirect_to assign_boxers_path, alert: @request.errors.full_messages.join(', ')
     end
   end
 end
