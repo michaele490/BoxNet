@@ -12,29 +12,31 @@
           <h2 class="section-title">About</h2>
           <div class="red-underline mb-3"></div>
           
-          <div class="info-item">
-            <strong>Nickname:</strong> <%= @boxer.nickname || "N/A" %>
-          </div>
-          <div class="info-item">
-            <strong>Nationality:</strong> <%= @boxer.nationality_with_flag %>
-          </div>
-          <div class="info-item">
-            <strong>Gender:</strong> <%= @boxer.gender || "N/A" %>
-          </div>
-          <div class="info-item">
-            <strong>Total Fights:</strong> 22
-          </div>
-          <div class="info-item">
-            <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "N/A" %>
-          </div>
-          <div class="info-item">
-            <strong>Height:</strong> <%= @boxer.height || "N/A" %>m
-          </div>
-          <div class="info-item">
-            <strong>Reach:</strong> <%= @boxer.reach || "N/A" %>m
-          </div>
-          <div class="info-item">
-            <strong>Division:</strong> <%= @boxer.weight_class || "N/A" %>
+          <div class="info-items-container">
+            <div class="info-item">
+              <strong>Nickname:</strong> <%= @boxer.nickname || "N/A" %>
+            </div>
+            <div class="info-item">
+              <strong>Nationality:</strong> <%= @boxer.nationality_with_flag %>
+            </div>
+            <div class="info-item">
+              <strong>Gender:</strong> <%= @boxer.gender || "N/A" %>
+            </div>
+            <div class="info-item">
+              <strong>Total Fights:</strong> 22
+            </div>
+            <div class="info-item">
+              <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "N/A" %>
+            </div>
+            <div class="info-item">
+              <strong>Height:</strong> <%= @boxer.height || "N/A" %>m
+            </div>
+            <div class="info-item">
+              <strong>Reach:</strong> <%= @boxer.reach || "N/A" %>m
+            </div>
+            <div class="info-item">
+              <strong>Division:</strong> <%= @boxer.weight_class || "N/A" %>
+            </div>
           </div>
         </div>
       </div>
@@ -45,25 +47,27 @@
           <h2 class="section-title">Attributes</h2>
           <div class="red-underline mb-3"></div>
           
-          <div class="attribute-item">
-            <strong>Overall Rating:</strong> 
-            <span><%= @boxer.overall_rating || 'N/A' %></span>
-          </div>
-          <div class="attribute-item">
-            <strong>Power:</strong>
-            <span><%= @boxer.power || 'N/A' %></span>
-          </div>
-          <div class="attribute-item">
-            <strong>Speed:</strong>
-            <span><%= @boxer.speed || 'N/A' %></span>
-          </div>
-          <div class="attribute-item">
-            <strong>IQ:</strong>
-            <span><%= @boxer.iq || 'N/A' %></span>
-          </div>
-          <div class="attribute-item">
-            <strong>Defence:</strong>
-            <span><%= @boxer.defence || 'N/A' %></span>
+          <div class="attribute-items-container">
+            <div class="attribute-item">
+              <strong>Rating:</strong> 
+              <span><%= @boxer.overall_rating || 'N/A' %></span>
+            </div>
+            <div class="attribute-item">
+              <strong>Power:</strong>
+              <span><%= @boxer.power || 'N/A' %></span>
+            </div>
+            <div class="attribute-item">
+              <strong>Speed:</strong>
+              <span><%= @boxer.speed || 'N/A' %></span>
+            </div>
+            <div class="attribute-item">
+              <strong>IQ:</strong>
+              <span><%= @boxer.iq || 'N/A' %></span>
+            </div>
+            <div class="attribute-item">
+              <strong>Defence:</strong>
+              <span><%= @boxer.defence || 'N/A' %></span>
+            </div>
           </div>
         </div>
       </div>
@@ -156,8 +160,24 @@
       margin-bottom: 0.5rem;
     }
 
+    .info-items-container, .attribute-items-container {
+      text-align: left;
+      padding: 0.5rem;
+    }
+
     .info-item, .attribute-item {
       margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: flex-start;
+      gap: 0.5rem;
+    }
+
+    .attribute-item strong {
+      min-width: 100px;
+    }
+
+    .info-item strong {
+      min-width: 100px;
     }
 
     .record-box {
