@@ -13,28 +13,28 @@
           <div class="red-underline mb-3"></div>
           
           <div class="info-item">
-            <strong>Nickname:</strong> The Apex
+            <strong>Nickname:</strong> <%= @boxer.nickname || "N/A" %>
           </div>
           <div class="info-item">
-            <strong>Nationality:</strong> Ireland
+            <strong>Nationality:</strong> <%= @boxer.nationality_with_flag %>
           </div>
           <div class="info-item">
-            <strong>Gender:</strong> Male
+            <strong>Gender:</strong> <%= @boxer.gender || "N/A" %>
           </div>
           <div class="info-item">
             <strong>Total Fights:</strong> 22
           </div>
           <div class="info-item">
-            <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "No coach assigned" %>
+            <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "N/A" %>
           </div>
           <div class="info-item">
-            <strong>Height:</strong> 1.75m
+            <strong>Height:</strong> <%= @boxer.height || "N/A" %>m
           </div>
           <div class="info-item">
-            <strong>Reach:</strong> 1.88m
+            <strong>Reach:</strong> <%= @boxer.reach || "N/A" %>m
           </div>
           <div class="info-item">
-            <strong>Division:</strong> Super Light
+            <strong>Division:</strong> <%= @boxer.weight_class || "N/A" %>
           </div>
         </div>
       </div>

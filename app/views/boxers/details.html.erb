@@ -36,7 +36,10 @@
 
             <div class="mb-3">
               <%= f.label :nationality, class: "form-label" %>
-              <%= f.text_field :nationality, class: "form-control", placeholder: "Enter nationality" %>
+              <%= f.select :nationality, 
+                          ISO3166::Country.translations.values.sort,
+                          { include_blank: "Select nationality" }, 
+                          class: "form-select" %>
             </div>
 
             <div class="text-center">
