@@ -29,6 +29,7 @@ class Boxer < ApplicationRecord
   ]
 
   validates :weight_class, inclusion: { in: WEIGHT_CLASSES }, allow_nil: true
+  validates :gender, inclusion: { in: ["Male", "Female"] }, allow_nil: true
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :username, presence: true, uniqueness: true

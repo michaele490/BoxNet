@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get "/coach_profile", to: "coaches#profile", as: :coach_profile
   get "/assign_boxers", to: "coaches#assign_boxers", as: :assign_boxers
   get "/boxer_profile/:id", to: "boxers#profile", as: :boxer_profile
+  get "/boxer_details", to: "boxers#details", as: :boxer_details
+  patch "/update_details", to: "boxers#update_details", as: :update_details_boxer
   post "/send_add_request/:boxer_id", to: "coaches#send_add_request", as: :send_add_request_coach
 
   # Resources

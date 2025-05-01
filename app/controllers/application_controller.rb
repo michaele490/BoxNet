@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: general_keys)
 
     if devise_resource_class == Boxer
-      boxer_keys = general_keys + [ :overall_rating, :defence, :power, :speed, :iq ]
+      boxer_keys = general_keys + [ :overall_rating, :defence, :power, :speed, :iq, :weight_class, :nickname, :nationality, :gender ]
       devise_parameter_sanitizer.permit(:account_update, keys: boxer_keys)
     elsif devise_resource_class == Coach
       coach_keys = general_keys # Add extra coach variables later

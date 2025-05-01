@@ -1,0 +1,97 @@
+<div class="container-fluid py-4 mb-5">
+  <div class="text-center mb-4">
+    <h1 class="mb-2">Boxer Details</h1>
+    <div class="red-underline"></div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with(model: @boxer, url: update_details_boxer_path(@boxer), method: :patch, local: true) do |f| %>
+            <div class="mb-3">
+              <%= f.label :nickname, class: "form-label" %>
+              <%= f.text_field :nickname, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :gender, class: "form-label" %>
+              <%= f.select :gender, ['Male', 'Female'], {}, class: "form-select" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :weight_class, class: "form-label" %>
+              <%= f.select :weight_class, Boxer::WEIGHT_CLASSES, {}, class: "form-select" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :height, class: "form-label" %>
+              <%= f.text_field :height, class: "form-control", placeholder: "Enter height in meters (e.g. 1.75)" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :reach, class: "form-label" %>
+              <%= f.text_field :reach, class: "form-control", placeholder: "Enter reach in meters (e.g. 1.88)" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :nationality, class: "form-label" %>
+              <%= f.text_field :nationality, class: "form-control", placeholder: "Enter nationality" %>
+            </div>
+
+            <div class="text-center">
+              <%= f.submit "Save Details", class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .container-fluid {
+      min-height: calc(100vh - 100px);
+    }
+
+    .red-underline {
+      height: 2px;
+      background-color: #ba0404;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-control, .form-select {
+      border: 1px solid #ddd;
+      padding: 0.75rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #ba0404;
+      box-shadow: 0 0 0 0.2rem rgba(186, 4, 4, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #ba0404;
+      border-color: #ba0404;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+    }
+
+    .btn-primary:hover {
+      background-color: #9a0303;
+      border-color: #9a0303;
+    }
+  </style>
+<% end %> 
