@@ -14,8 +14,11 @@ Rails.application.routes.draw do
   get "/assign_boxers", to: "coaches#assign_boxers", as: :assign_boxers
   get "/boxer_profile/:id", to: "boxers#profile", as: :boxer_profile
   get "/boxer_details", to: "boxers#details", as: :boxer_details
+  get "/edit_boxer_ratings/:boxer_id", to: "coaches#edit_boxer", as: :edit_boxer_ratings
   patch "/update_details", to: "boxers#update_details", as: :update_details_boxer
+  patch "/update_attributes", to: "coach#update_attributes", as: :update_attributes
   post "/send_add_request/:boxer_id", to: "coaches#send_add_request", as: :send_add_request_coach
+  delete "/cancel_request/:boxer_id", to: "coaches#cancel_request", as: :cancel_request_coach
 
   # Resources
   namespace :users do
@@ -55,4 +58,6 @@ Rails.application.routes.draw do
       post :reject
     end
   end
+
+  delete 'boxers/:id/remove', to: 'boxers#remove', as: 'remove_boxer'
 end

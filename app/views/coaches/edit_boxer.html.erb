@@ -1,0 +1,60 @@
+<div class="container-fluid py-4 mb-5">
+  <div class="text-center mb-4">
+    <h1 class="mb-2"><%= link_to @boxer.full_name, boxer_profile_path(@boxer), class: "boxer-name" %></h1>
+    <div class="red-underline mb-3"></div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with(model: @boxer, url: update_attributes_path(@boxer), method: :patch, local: true) do |f| %>
+            <div class="mb-3">
+              <%= f.label :overall_rating, class: "form-label" %>
+              <%= f.text_field :overall_rating, class: "form-control", placeholder: "Enter value from 0-100" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :power, class: "form-label" %>
+              <%= f.text_field :power,  class: "form-control", placeholder: "Enter power rating: 0-100" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :speed, class: "form-label" %>
+              <%= f.text_field :speed, class: "form-control", placeholder: "Enter speed rating: 0-100" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :stamina, class: "form-label" %>
+              <%= f.text_field :stamina, class: "form-control", placeholder: "Enter stamina rating: 0-100" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :iq, class: "form-label" %>
+              <%= f.text_field :iq, class: "form-control", placeholder: "Enter IQ rating: 0-100" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :defence, class: "form-label" %>
+              <%= f.text_field :defence, class: "form-control", placeholder: "Enter defence rating: 0-100" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .boxer-name{
+      color: black;
+      text-decoration: none;
+    }
+
+    .boxer-name:hover{
+      color: #ba0404;
+      text-decoration: underline;
+    }
+  </style>
+<% end %>

@@ -13,18 +13,20 @@
             <!-- Division Filter -->
             <div class="col-md-4 border-end">
               <div class="p-3">
-                <select class="form-select filter-select" disabled>
-                  <option class="filter-option">Division</option>
-                </select>
+                <%= select_tag :division,
+                  options_for_select([["Division", ""]] + Boxer::WEIGHT_CLASSES),
+                  class: 'form-select filter-select'
+                %>
               </div>
             </div>
 
             <!-- Nationality Filter -->
             <div class="col-md-4 border-end">
               <div class="p-3">
-                <select class="form-select filter-select" disabled>
-                  <option class="filter-option">Nationality</option>
-                </select>
+                <%= select_tag :nationality,
+                  options_for_select([["Nationality", ""]] + ISO3166::Country.translations.values.sort),
+                  class: 'form-select filter-select'
+                %>
               </div>
             </div>
 
@@ -36,7 +38,7 @@
                     <%= text_field_tag :search, params[:search], 
                         class: 'form-control',
                         placeholder: 'Enter boxer name...' %>
-                    <button class="btn btn-outline-secondary" type="submit">
+                    <button class="btn btn-outline-secondary search-btn" type="submit">
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
@@ -57,21 +59,29 @@
                   <th>Name</th>
                   <th>Division</th>
                   <th>Nationality</th>
-                  <th></th>
+                  <th>Requests</th>
                 </tr>
               </thead>
               <tbody>
                 <% if @boxers.any? %>
                   <% @boxers.each do |boxer| %>
                     <tr>
-                      <td><%= link_to boxer.full_name, '#', class: 'boxer_link text-decoration-none text-dark' %></td>
-                      <td>N/A</td>
-                      <td>N/A</td>
-                      <td class="text-end">
+                      <td><%= link_to boxer.full_name, boxer_profile_path(boxer.id), class: 'boxer_link text-decoration-none text-dark' %></td>
+                      <td><%= boxer.weight_class.present? ? boxer.weight_class : "N/A" %></td>
+                      <td><%= boxer.nationality.present? ? boxer.nationality : "N/A" %></td>
+                      <td class="text-start">
                         <% if boxer.boxer_requests.exists?(coach_id: current_coach.id, status: :pending) %>
-                          <button class="btn btn-secondary" disabled>
-                            Pending
-                          </button>
+                          <div class="d-inline-flex gap-2">
+                            <button class="btn btn-secondary" disabled>
+                              Pending
+                            </button>
+                            <%= button_to cancel_request_coach_path(boxer_id: boxer.id),
+                                method: :delete,
+                                class: 'btn btn-outline-danger',
+                                form: { class: 'd-inline' } do %>
+                              Cancel
+                            <% end %>
+                          </div>
                         <% else %>
                           <%= button_to send_add_request_coach_path(boxer_id: boxer.id), 
                               method: :post,
@@ -133,6 +143,7 @@
 
     .table td {
       vertical-align: middle;
+      text-align: left;
     }
 
     .card-body .form-select,
@@ -143,11 +154,12 @@
     .card-body .p-3 {
       padding-top: 0.8rem !important;
       padding-bottom: 0.8rem !important;
+      background-color: #ba0404;
     }
 
     .filter-select {
-      background-color: #ba0404 !important;
-      color: white !important;
+      background-color: white !important;
+      color: black !important;
       border: none;
     }
 
@@ -162,29 +174,81 @@
 
     /* Change the color of the dropdown arrow */
     .filter-select {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23000000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
     }
 
     /* Custom button styles */
     .btn.request-btn {
-      background-color: #ba0404;
-      border-color: #ba0404;
+      background-color: #5684ff;
+      border-color: #5684ff;
       color: white;
       padding: 6px 12px;
       font-size: 14px;
     }
 
+    /* Add styles for the cancel button */
+    .btn.btn-outline-danger {
+      border-color: #dc3545;
+      color: #dc3545;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    .btn.btn-outline-danger:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    /* Add styles for the pending status button */
+    .btn.btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: white;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    /* Add styles for the button container */
+    .d-inline-flex {
+      display: inline-flex !important;
+    }
+
+    .gap-2 {
+      gap: 0.5rem !important;
+    }
+
+    /* Search button styles */
+    .search-btn {
+      background-color: white !important;
+      border: none !important;
+      color: #6c757d !important;
+    }
+
+    .search-btn:hover, .search-btn:active, .search-btn:focus {
+      background-color: white !important;
+      color: #6c757d !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Search input styles */
+    .form-control:focus {
+      border: none !important;
+      /*border-color: #ced4da;*/
+      box-shadow: none;
+    }
+
     .btn.request-btn:hover {
       opacity: 0.8;
-      background-color: #ba0404;
-      border-color: #ba0404;
+      background-color: #5684ff;
+      border-color: #5684ff;
       color: white;
     }
 
     .btn.request-btn:active {
       opacity: 0.5;
-      background-color: #ba0404;
-      border-color: #ba0404;
+      background-color: #5684ff;
+      border-color: #5684ff;
       color: white;
     }
   </style>

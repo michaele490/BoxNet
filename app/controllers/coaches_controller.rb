@@ -39,6 +39,15 @@ class CoachesController < ApplicationController
 =end
   end
 
+  def edit_boxer
+    @boxer = Boxer.find(params[:boxer_id])
+  end
+
+  def edit_profile
+    @coach = current_coach
+    @boxer = Boxer.find(params[:boxer_id])
+  end
+
   def send_add_request
     @boxer = Boxer.find(params[:boxer_id])
     @request = current_coach.boxer_requests.build(boxer: @boxer)
@@ -48,5 +57,33 @@ class CoachesController < ApplicationController
     else
       redirect_to assign_boxers_path, alert: @request.errors.full_messages.join(', ')
     end
+  end
+
+  def update_attributes
+    @boxer = Boxer.find(params[:id])
+    if @boxer.update(boxer_params)
+      redirect_to boxer_profile_path(@boxer)
+      puts "The coach has successfully updated the boxer's details!!!"
+    else
+      redirect_to edit_boxer_ratings_path(@boxer)
+      puts "There was a failure in updating the boxer's attributes"
+    end
+  end
+
+  def cancel_request
+    @boxer = Boxer.find(params[:boxer_id])
+    @request = current_coach.boxer_requests.find_by(boxer: @boxer, status: :pending)
+
+    if @request&.destroy
+      redirect_to assign_boxers_path, notice: 'Request canceled successfully!'
+    else
+      redirect_to assign_boxers_path, alert: 'Failed to cancel request.'
+    end
+  end
+
+  private
+
+  def boxer_params
+    params.require(:boxer).permit(:overall_rating, :defence, :power, :speed, :iq, :height)
   end
 end
