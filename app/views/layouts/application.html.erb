@@ -54,7 +54,6 @@
               </div>
             </div>
           <% elsif coach_signed_in? %>
-            <!--<span class="navbar-button account">Coach | <%= current_coach.username %></span>-->
             <%= link_to current_coach.full_name, coach_profile_path, class: "navbar-button account" %>
             <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-button in_out-btn" %>
           
