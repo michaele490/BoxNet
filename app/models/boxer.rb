@@ -47,6 +47,15 @@ class Boxer < ApplicationRecord
     country_code
   end
 
+  def meters_to_feet_inches(meter_str)
+    return "N/A" if meter_str.nil?
+    meters = meter_str.to_f
+    total_inches = (meters * 39.3701).round
+    feet = total_inches / 12
+    inches = total_inches % 12
+    "#{feet}'#{inches}\""
+  end
+
   def nationality_with_flag
     return "N/A" if nationality.blank?
     code = country_code

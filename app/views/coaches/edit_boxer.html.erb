@@ -11,32 +11,36 @@
           <%= form_with(model: @boxer, url: update_attributes_path(@boxer), method: :patch, local: true) do |f| %>
             <div class="mb-3">
               <%= f.label :overall_rating, class: "form-label" %>
-              <%= f.text_field :overall_rating, class: "form-control", placeholder: "Enter value from 0-100" %>
+              <%= f.text_field :overall_rating, class: "form-control", placeholder: if @boxer.overall_rating.nil? then "Enter value from 0-100" else @boxer.overall_rating end %>
             </div>
 
             <div class="mb-3">
               <%= f.label :power, class: "form-label" %>
-              <%= f.text_field :power,  class: "form-control", placeholder: "Enter power rating: 0-100" %>
+              <%= f.text_field :power,  class: "form-control", placeholder: if @boxer.power.nil? then "Enter power rating: 0-100" else @boxer.power end %>
             </div>
 
             <div class="mb-3">
               <%= f.label :speed, class: "form-label" %>
-              <%= f.text_field :speed, class: "form-control", placeholder: "Enter speed rating: 0-100" %>
+              <%= f.text_field :speed, class: "form-control", placeholder: if @boxer.speed.nil? then "Enter speed rating: 0-100" else @boxer.speed end %>
             </div>
 
             <div class="mb-3">
               <%= f.label :stamina, class: "form-label" %>
-              <%= f.text_field :stamina, class: "form-control", placeholder: "Enter stamina rating: 0-100" %>
+              <%= f.text_field :stamina, class: "form-control", placeholder: if @boxer.stamina.nil? then "Enter stamina rating: 0-100" else @boxer.stamina end %>
             </div>
 
             <div class="mb-3">
               <%= f.label :iq, class: "form-label" %>
-              <%= f.text_field :iq, class: "form-control", placeholder: "Enter IQ rating: 0-100" %>
+              <%= f.text_field :iq, class: "form-control", placeholder: if @boxer.iq.nil? then "Enter IQ rating: 0-100" else @boxer.iq end %>
             </div>
 
             <div class="mb-3">
               <%= f.label :defence, class: "form-label" %>
-              <%= f.text_field :defence, class: "form-control", placeholder: "Enter defence rating: 0-100" %>
+              <%= f.text_field :defence, class: "form-control", placeholder: if @boxer.defence.nil? then "Enter defence rating: 0-100" else @boxer.defence end %>
+            </div>
+
+            <div class="text-center">
+              <%= f.submit "Save", class: "btn btn-primary" %>
             </div>
           <% end %>
         </div>
@@ -55,6 +59,17 @@
     .boxer-name:hover{
       color: #ba0404;
       text-decoration: underline;
+    }
+
+    .container-fluid {
+      min-height: calc(100vh - 100px);
+    }
+
+    .red-underline {
+      height: 2px;
+      background-color: #ba0404;
+      width: 100%;
+      margin-bottom: 1rem;
     }
   </style>
 <% end %>

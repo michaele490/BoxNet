@@ -1,5 +1,6 @@
 class CoachesController < ApplicationController
   before_action :authenticate_coach!
+  before_action :set_boxer, only: [:edit_boxer, :update_attributes]
   
   def profile
     @coach = current_coach
@@ -40,7 +41,7 @@ class CoachesController < ApplicationController
   end
 
   def edit_boxer
-    @boxer = Boxer.find(params[:boxer_id])
+    # @boxer is set by before_action
   end
 
   def edit_profile
@@ -60,9 +61,8 @@ class CoachesController < ApplicationController
   end
 
   def update_attributes
-    @boxer = Boxer.find(params[:id])
     if @boxer.update(boxer_params)
-      redirect_to boxer_profile_path(@boxer)
+      redirect_to coach_profile_path(current_coach.id)
       puts "The coach has successfully updated the boxer's details!!!"
     else
       redirect_to edit_boxer_ratings_path(@boxer)
@@ -83,7 +83,11 @@ class CoachesController < ApplicationController
 
   private
 
+  def set_boxer
+    @boxer = Boxer.find(params[:boxer_id])
+  end
+
   def boxer_params
-    params.require(:boxer).permit(:overall_rating, :defence, :power, :speed, :iq, :height)
+    params.require(:boxer).permit(:overall_rating, :defence, :power, :speed, :iq, :height, :stamina)
   end
 end

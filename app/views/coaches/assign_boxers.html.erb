@@ -68,7 +68,7 @@
                     <tr>
                       <td><%= link_to boxer.full_name, boxer_profile_path(boxer.id), class: 'boxer_link text-decoration-none text-dark' %></td>
                       <td><%= boxer.weight_class.present? ? boxer.weight_class : "N/A" %></td>
-                      <td><%= boxer.nationality.present? ? boxer.nationality : "N/A" %></td>
+                      <td><%= boxer.nationality.present? ? boxer.nationality_with_flag : "N/A" %></td>
                       <td class="text-start">
                         <% if boxer.boxer_requests.exists?(coach_id: current_coach.id, status: :pending) %>
                           <div class="d-inline-flex gap-2">

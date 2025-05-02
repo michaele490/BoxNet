@@ -29,7 +29,7 @@
               <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "N/A" %>
             </div>
             <div class="info-item">
-              <strong>Height:</strong> <%= @boxer.height || "N/A" %>m
+              <strong>Height:</strong> <%= @boxer.height || "N/A" %>m / <%= @boxer.meters_to_feet_inches(@boxer.height) %>
             </div>
             <div class="info-item">
               <strong>Reach:</strong> <%= @boxer.reach || "N/A" %>m

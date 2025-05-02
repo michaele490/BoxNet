@@ -19,6 +19,7 @@
                     <div>
                       <h5 class="mb-1"><%= link_to boxer.full_name, boxer_profile_path(boxer), class: "boxer-name" %></h5>
                       <small class="text-muted">Rating: <%= boxer.overall_rating || 'N/A' %></small>
+                      <small class="text-muted">Division: <%= boxer.weight_class || 'N/A' %></small>
                     </div>
                     <div class="button-stack">
                       <%= link_to edit_boxer_ratings_path(boxer), class: "btn btn-sm btn-edit mb-2" do %>
@@ -152,6 +153,10 @@
     .fight-item:last-child,
     .result-item:last-child {
       border-bottom: none !important;
+    }
+    
+    .boxer-item small{
+      display: block;
     }
 
     .btn.btn-edit {
