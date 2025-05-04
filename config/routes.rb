@@ -60,4 +60,6 @@ Rails.application.routes.draw do
   end
 
   delete 'boxers/:id/remove', to: 'boxers#remove', as: 'remove_boxer'
+
+  get '/boxers/autocomplete', to: 'boxers#autocomplete'
 end

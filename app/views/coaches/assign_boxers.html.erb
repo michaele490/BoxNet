@@ -10,7 +10,7 @@
       <div class="card mb-4">
         <div class="card-body p-0">
           <%= form_tag assign_boxers_path, method: :get, id: "filter-form" do %>
-            <div class="row g-0">
+            <div class="row g-0 filter-row">
               <!-- Division Filter -->
               <div class="col-md-4 border-end filter-col">
                 <select name="division" id="division-select" class="slim-select" form="filter-form">
@@ -33,11 +33,14 @@
 
               <!-- Search Box -->
               <div class="col-md-4 filter-col">
-                <div class="input-group" style="height: 38px;">
+                <div class="search-bar-wrapper">
                   <%= text_field_tag :search, params[:search], 
                       class: 'form-control',
-                      placeholder: 'Enter boxer name...' %>
-                  <button class="btn btn-outline-secondary search-btn" type="submit">
+                      placeholder: 'Enter boxer name...',
+                      autocomplete: 'off',
+                      id: 'boxer-search',
+                      style: 'padding-right: 2.5rem;' %>
+                  <button type="submit" class="search-icon-btn">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
@@ -108,10 +111,6 @@
 
 <% content_for :head do %>
   <style>
-    .test-div {
-      background-color: lightblue;
-    }
-
     /* Target the button inside the form with class 'request' */
     form.request button {
       background-color: #ba0404;
@@ -157,6 +156,10 @@
       border-radius: 8px !important;
       overflow: visible !important;
       background-color: #ba0404;
+    }
+
+    .card{
+      border: none !important;
     }
 
     .ss-main, .ss-content {
@@ -269,6 +272,8 @@
     .filter-col {
       background-color: #ba0404 !important;
       padding: 0.8rem !important;
+      display: flex;
+      align-items: center;
     }
     
     .ss-main, .ss-content {
@@ -279,18 +284,80 @@
       margin-top: 2px !important;
       z-index: 1050 !important;
     }
+
+    .input-group {
+      width: 100%;
+      height: 38px;
+    }
+
+    #boxer-search {
+      height: 38px;
+    }
+
+    .search-btn {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-bar-wrapper {
+      width: 100%;
+      position: relative;
+      height: 38px;
+      display: flex;
+      align-items: center;
+    }
+    #boxer-search {
+      height: 38px;
+      width: 100%;
+    }
+    .search-icon-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      padding: 0;
+      margin: 0;
+      height: 24px;
+      width: 24px;
+      color: #6c757d;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .search-icon-btn:focus {
+      outline: none;
+    }
   </style>
   <!-- Slim Select CSS -->
   <link href="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css" />
 <% end %>
 
 <% content_for :javascript do %>
   <!-- Slim Select JS -->
   <script src="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       new SlimSelect({ select: '#division-select' });
       new SlimSelect({ select: '#nationality-select' });
+
+      // Awesomplete autocomplete for boxer search
+      var input = document.getElementById("boxer-search");
+      var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 10 });
+      input.addEventListener("input", function() {
+        var query = input.value;
+        if (query.length > 0) {
+          fetch("/boxers/autocomplete?term=" + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+              awesomplete.list = data.map(b => b.name);
+            });
+        }
+      });
 
       // Keep your auto-submit logic
       var form = document.getElementById("filter-form");
@@ -299,13 +366,11 @@
 
       if (division) {
         division.addEventListener("change", function() {
-          console.log("Division filter changed to: ", division.value);
           form.submit();
         });
       }
       if (nationality) {
         nationality.addEventListener("change", function() {
-          console.log("Nationality filter changed to: ", nationality.value);
           form.submit();
         });
       }
