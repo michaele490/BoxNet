@@ -1,6 +1,13 @@
 <div class="login-container">
   <h2><%= resource_name.to_s.titleize %> Log in</h2>
 
+  <% if alert %>
+    <div class="alert alert-danger">
+      <%= alert %>
+      <p>Ensure you select correct<br>accounttype for log in</p>
+    </div>
+  <% end %>
+
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field">
       <%= f.label :email %><br />

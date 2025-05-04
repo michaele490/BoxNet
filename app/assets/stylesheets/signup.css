@@ -1,9 +1,8 @@
 .signup{
     border: 2px solid black;
-    height: 150px;
     border-radius: 17px;
     margin-top: 15px;
-    height: 92%;
+    min-height: 420px;
     width: 83%;
     margin-left: auto;
     margin-right:  auto;
@@ -21,7 +20,7 @@
 }
 
 .account_description li{
-    margin-bottom: 15px;
+    margin-bottom: 28px;
     text-align: left;
 }
 
@@ -34,5 +33,11 @@
     border: none;
     color: white;
     font-weight: bold;
-    margin-top: auto;
+    margin-top: 30px;
+    margin-bottom: 24px;
+}
+
+/* Make the list grow to fill space */
+.account_description {
+    flex: 1 1 auto;
 }
