@@ -54,16 +54,44 @@
               </div>
             </div>
           <% elsif coach_signed_in? %>
-            <%= link_to current_coach.full_name, coach_profile_path, class: "navbar-button account" %>
-            <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+            <div class="dropdown account-dropdown">
+              <button class="navbar-button account dropdown-toggle">
+                <%= current_coach.full_name %>
+              </button>
+              <div class="dropdown-content account-dropdown-content">
+                <%= link_to "Profile", coach_profile_path(current_coach.id), class: "navbar-link account-options" %>
+                <%= link_to "Info", '#', class: "navbar-link account-options" %>
+                <%= link_to "Requests", '#', class: "navbar-link account-options" %>
+                <%= link_to "Edit", '#', class: "navbar-link account-options" %>
+                <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-link account-options" %>
+              </div>
+            </div>
           
           <% elsif spectator_signed_in? %>
-            <span class="navbar-link">Spectator | <%= current_spectator.username %></span>
-            <%= link_to "Sign Out", destroy_spectator_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+            <div class="dropdown account-dropdown">
+              <button class="navbar-button account dropdown-toggle">
+                <%= current_spectator.username %>
+              </button>
+              <div class="dropdown-content account-dropdown-content">
+                <%= link_to "Profile", '#', class: "navbar-link account-options" %>
+                <%= link_to "Predictions", '#', class: "navbar-link account-options" %>
+                <%= link_to "Edit", '#', class: "navbar-link account-options" %>
+                <%= link_to "Sign Out", destroy_spectator_session_path, method: :delete, class: "navbar-link account-options" %>
+              </div>
+            </div>
             
           <% elsif editor_signed_in? %>
-            <span class="navbar-link">Editor | <%= current_editor.username %></span>
-            <%= link_to "Sign Out", destroy_editor_session_path, method: :delete, class: "navbar-button in_out-btn" %>
+            <div class="dropdown account-dropdown">
+              <button class="navbar-button account dropdown-toggle">
+                <%= current_editor.username %>
+              </button>
+              <div class="dropdown-content account-dropdown-content">
+                <%= link_to "Profile", '#', class: "navbar-link account-options" %> 
+                <%= link_to "Upcoming", '#', class: "navbar-link account-options" %>
+                <%= link_to "Results", '#', class: "navbar-link account-options" %>
+                <%= link_to "Sign Out", destroy_editor_session_path, method: :delete, class: "navbar-link account-options" %>
+              </div>
+            </div>
           
           <% else %>
             <div class="dropdown">
@@ -82,5 +110,6 @@
     </nav>
     <%= yield %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%= yield :javascript %>
   </body>
 </html>

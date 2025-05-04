@@ -19,11 +19,20 @@ class CoachesController < ApplicationController
 
   def assign_boxers
     @boxers = Boxer.where(coach_id: nil)
-    
+
+    if params[:division].present? && params[:division] != ""
+      @boxers = @boxers.where(weight_class: params[:division])
+    end
+
+    if params[:nationality].present? && params[:nationality] != ""
+      @boxers = @boxers.where(nationality: params[:nationality])
+    end
+
     if params[:search].present?
-      @boxers = @boxers.where("first_name ILIKE ? OR last_name ILIKE ?", 
-                             "%#{params[:search]}%", 
-                             "%#{params[:search]}%")
+      @boxers = @boxers.where("first_name ILIKE ? OR last_name ILIKE ? OR (first_name || ' ' || last_name) ILIKE ?", 
+                              "%#{params[:search]}%", 
+                              "%#{params[:search]}%",
+                              "%#{params[:search]}%")
     end
 
 =begin
