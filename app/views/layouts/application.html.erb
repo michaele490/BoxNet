@@ -45,6 +45,11 @@
             <div class="dropdown account-dropdown">
               <button class="navbar-button account dropdown-toggle">
                 <%= current_boxer.full_name %>
+                <% if current_boxer.boxer_requests.where(status: :pending).any? %>
+                  <span style="color: #dc3545; margin-left: 8px;">
+                    <i class="fas fa-bell"></i>
+                  </span>
+                <% end %>
               </button>
               <div class="dropdown-content account-dropdown-content">
                 <%= link_to "Profile", boxer_profile_path(current_boxer.id), class: "navbar-link account-options" %>
