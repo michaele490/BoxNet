@@ -7,11 +7,17 @@ class BoxerRequestsController < ApplicationController
   end
 
   def accept
+=begin
+    if current_boxer.coach.present?
+      redirect_to boxer_requests_path, alert: 'You can only have one coach.'
+      return
+    end
+=end
     if @request.update(status: :accepted)
       @request.boxer.update(coach: @request.coach)
-      redirect_to boxer_requests_path, notice: 'Request accepted successfully!'
+      redirect_to boxer_requests_path, notice_test: 'Request accepted successfully!'
     else
-      redirect_to boxer_requests_path, alert: 'Failed to accept request.'
+      redirect_to boxer_requests_path, alert: "Boxer can only have one coach<br>Remove current coach in \'edit\'"
     end
   end
 

@@ -29,10 +29,20 @@
               <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "N/A" %>
             </div>
             <div class="info-item">
-              <strong>Height:</strong> <%= @boxer.height || "N/A" %>m / <%= @boxer.meters_to_feet_inches(@boxer.height) %>
+              <strong>Height:</strong>
+              <% if @boxer.height.present? %>
+                <%= @boxer.height %>m / <%= @boxer.meters_to_feet_inches(@boxer.height) %>
+              <% else %>
+                N/A
+              <% end %>
             </div>
             <div class="info-item">
-              <strong>Reach:</strong> <%= @boxer.reach || "N/A" %>m
+              <strong>Reach:</strong>
+              <% if @boxer.reach.present? %>
+                <%= @boxer.reach %>m
+              <% else %>
+                N/A
+              <% end %>
             </div>
             <div class="info-item">
               <strong>Division:</strong> <%= @boxer.weight_class || "N/A" %>

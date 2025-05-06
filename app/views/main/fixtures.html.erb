@@ -1,57 +1,85 @@
-<div class="container-fluid text-center" id="div-view">
-    <h1>Fixtures</h1>
-    <div class="results-underline" style="height: 4px; background-color: #BA0404; width: 65%; margin: 3px auto;"></div>
+<div class="container-fluid py-4">
+  <div class="text-center mb-4">
+    <h1 class="mb-2">Fixtures</h1>
+    <div class="results-underline"></div>
+  </div>
 
-    <!-- Filters -->
-    <div class="container results-filter">
-        <div class="dropdown me-3">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Division
-            </button>
-            <ul class="dropdown-menu scrollable-dropdown">
-                <li><a href="#" class="dropdown-item">Heavyweight</a></li>
-                <li><a href="#" class="dropdown-item">Light Heavyweight</a></li>
-                <li><a href="#" class="dropdown-item">Welterweight</a></li>
-                <li><a href="#" class="dropdown-item">Lightweight</a></li>
-            </ul>
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-md-12">
+      <!-- Filters -->
+      <form id="fixtures-filter-form">
+        <div class="results-filter">
+          <select name="division" id="division-select" class="form-select filter-select">
+            <option value="">Division</option>
+            <option value="Heavyweight">Heavyweight</option>
+            <option value="Light Heavyweight">Light Heavyweight</option>
+            <option value="Welterweight">Welterweight</option>
+            <option value="Lightweight">Lightweight</option>
+          </select>
+          <select name="nationality" id="nationality-select" class="form-select filter-select">
+            <option value="">Nationality</option>
+            <option value="England">England</option>
+            <option value="Panama">Panama</option>
+            <option value="Ukraine">Ukraine</option>
+            <option value="Nigeria">Nigeria</option>
+          </select>
+          <select name="region" id="region-select" class="form-select filter-select">
+            <option value="">Region</option>
+            <option value="Ireland">Ireland</option>
+            <option value="USA">USA</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Saudi">Saudi</option>
+          </select>
+          <select name="gender" id="gender-select" class="form-select filter-select">
+            <option value="">Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-        <div class="dropdown me-3">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Region
-            </button>
-            <ul class="dropdown-menu scrollable-dropdown">
-                <li><a href="#" class="dropdown-item">Ireland</a></li>
-                <li><a href="#" class="dropdown-item">USA</a></li>
-                <li><a href="#" class="dropdown-item">Mexico</a></li>
-                <li><a href="#" class="dropdown-item">Saudi</a></li>
-            </ul>
-        </div>
-        <div class="dropdown me-3">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Nationality
-            </button>
-            <ul class="dropdown-menu scrollable-dropdown">
-                <li><a href="#" class="dropdown-item">England</a></li>
-                <li><a href="#" class="dropdown-item">Panama</a></li>
-                <li><a href="#" class="dropdown-item">Ukraine</a></li>
-                <li><a href="#" class="dropdown-item">Nigeria</a></li>
-            </ul>
-        </div>
-        <div class="dropdown me-3">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Rating
-            </button>
-            <ul class="dropdown-menu scrollable-dropdown">
-                <li><a href="#" class="dropdown-item">80-100</a></li>
-                <li><a href="#" class="dropdown-item">60-79</a></li>
-                <li><a href="#" class="dropdown-item">40-59</a></li>
-                <li><a href="#" class="dropdown-item">0-40</a></li>
-            </ul>
-        </div>
-    </div>
+      </form>
 
-    <!-- Add if statement later to only render when fixtures is empty -->
-    <div class="no-results">
-        <p><i>No fixtures have been added yet</i></p>
+      <!-- Dummy Fixtures Table -->
+      <div class="card mt-4">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Date</th>
+                  <th>Boxer 1</th>
+                  <th>Boxer 2</th>
+                  <th>Division</th>
+                  <th>Region</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024-06-10</td>
+                  <td>John Smith</td>
+                  <td>Mike O'Neil</td>
+                  <td>Heavyweight</td>
+                  <td>Ireland</td>
+                </tr>
+                <tr>
+                  <td>2024-06-15</td>
+                  <td>Anna Ivanova</td>
+                  <td>Maria Lopez</td>
+                  <td>Lightweight</td>
+                  <td>USA</td>
+                </tr>
+                <tr>
+                  <td>2024-07-01</td>
+                  <td>James Brown</td>
+                  <td>Samuel Okoye</td>
+                  <td>Welterweight</td>
+                  <td>Mexico</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

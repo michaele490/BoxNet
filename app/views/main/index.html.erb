@@ -1,39 +1,162 @@
 <div class="container-fluid">
     <div class="row first">
-        <div class="col-md-3">
-            Rankings
-            <div class="first-row rankings">
-                <table>
-                    <tr style="border-bottom: 1px solid black">
-                        <th>Name</th>
-                        <th>Weight Division</th>
-                    </tr>
+        <div class="col-md-4">
+            <h3 class="section-title">Upcoming Fights</h3>
+            <div class="first-row upcoming-fights">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Fighter 1</th>
+                            <th>vs</th>
+                            <th>Fighter 2</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John "The Hammer" Smith</td>
+                            <td>vs</td>
+                            <td>Mike "Iron Fist" Johnson</td>
+                            <td>2024-04-15</td>
+                        </tr>
+                        <tr>
+                            <td>Sarah "The Storm" Williams</td>
+                            <td>vs</td>
+                            <td>Emma "The Viper" Davis</td>
+                            <td>2024-04-20</td>
+                        </tr>
+                        <tr>
+                            <td>Alex "The Beast" Rodriguez</td>
+                            <td>vs</td>
+                            <td>Chris "The Machine" Taylor</td>
+                            <td>2024-04-25</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
-        <div class="col-md-6">
-            Results
+        <div class="col-md-4">
+            <h3 class="section-title">Recent Results</h3>
             <div class="first-row results">
-                <table>
-                    <tr>
-                        <th>Contender Name 1</th>
-                        <th>Contender Name 2</th>
-                        <th>Winner</th>
-                        <th>Result Type</th>
-                    </tr>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Fighter 1</th>
+                            <th>vs</th>
+                            <th>Fighter 2</th>
+                            <th>Winner</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>James "The Dragon" Lee</td>
+                            <td>vs</td>
+                            <td>Tom "The Tank" Wilson</td>
+                            <td>James Lee</td>
+                            <td>KO (Round 2)</td>
+                        </tr>
+                        <tr>
+                            <td>Maria "The Queen" Garcia</td>
+                            <td>vs</td>
+                            <td>Lisa "The Panther" Brown</td>
+                            <td>Maria Garcia</td>
+                            <td>Decision (Unanimous)</td>
+                        </tr>
+                        <tr>
+                            <td>David "The Destroyer" Chen</td>
+                            <td>vs</td>
+                            <td>Robert "The Rock" Miller</td>
+                            <td>David Chen</td>
+                            <td>TKO (Round 3)</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
-        <div class="col-md-3">
-            Prediction Leaderboards
+        <div class="col-md-4">
+            <h3 class="section-title">Prediction Leaderboard</h3>
             <div class="first-row pred_leaderboards">
-                <table>
-                    <tr style="border-bottom: 1px solid black">
-                        <th>Username</th>
-                        <th>Points</th>
-                    </tr>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Username</th>
+                            <th>Points</th>
+                            <th>Win Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>FightMaster99</td>
+                            <td>1250</td>
+                            <td>85%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>BoxingPro</td>
+                            <td>1180</td>
+                            <td>82%</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>ChampionPredictor</td>
+                            <td>1120</td>
+                            <td>80%</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .section-title {
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: bold;
+        margin-top: 32px;
+    }
+    
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .table tr:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .first-row {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-bottom: 32px;
+    }
+
+    @media (max-width: 768px) {
+        .section-title {
+            margin-top: 40px;
+            font-size: 1.3em;
+        }
+        .first-row {
+            padding: 12px;
+            margin-bottom: 40px;
+        }
+    }
+</style>

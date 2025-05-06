@@ -6,6 +6,31 @@
 
   <div class="row justify-content-center">
     <div class="col-md-8">
+      <!-- Coach Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="h5 mb-3">Current Coach</h3>
+          <% if @boxer.coach.present? %>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <p class="mb-0"><%= @boxer.coach.full_name %></p>
+              </div>
+              <div>
+                <%= button_to remove_boxer_path(@boxer), 
+                            method: :delete,
+                            class: "btn btn-danger",
+                            form: { data: { turbo_confirm: "Are you sure you want to remove your coach?" } } do %>
+                  <i class="fas fa-user-minus"></i> Remove Coach
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <p class="text-muted mb-0">No coach assigned</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Details Form -->
       <div class="card">
         <div class="card-body">
           <%= form_with(model: @boxer, url: update_details_boxer_path(@boxer), method: :patch, local: true) do |f| %>

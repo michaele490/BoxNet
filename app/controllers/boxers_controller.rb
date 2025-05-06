@@ -19,15 +19,20 @@ class BoxersController < ApplicationController
 
     def remove
       @boxer = Boxer.find(params[:id])
-      
-      if @boxer.coach == current_coach
-        # Find and destroy the associated BoxerRequest
-        BoxerRequest.find_by(boxer: @boxer, coach: current_coach)&.destroy
-        
+
+      if (boxer_signed_in? && current_boxer == @boxer) || (coach_signed_in? && @boxer.coach == current_coach)
+        # Remove the coach assignment
+        BoxerRequest.find_by(boxer: @boxer, coach: @boxer.coach)&.destroy
         @boxer.update(coach: nil)
-        redirect_to coach_profile_path, notice: "#{@boxer.full_name} has been removed from your boxers."
+        if boxer_signed_in?
+          redirect_to boxer_profile_path(@boxer), notice: "Coach has been removed."
+          # puts "The intended condition was executed!!! Congratulations!"
+        else
+          redirect_to coach_profile_path, notice: "#{@boxer.full_name} has been removed from your boxers."
+          # puts "The unintended condition was executed!!! Too bad!"
+        end
       else
-        redirect_to coach_profile_path, alert: "You are not authorized to remove this boxer."
+        redirect_back fallback_location: root_path, alert: "You are not authorized to perform this action."
       end
     end
 
