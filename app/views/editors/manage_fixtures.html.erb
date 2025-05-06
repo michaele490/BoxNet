@@ -1,0 +1,24 @@
+<div class="container-fluid py-4 mb-5">
+    <div class="text-center mb-4">
+        <h1 class="mb-2">Upcoming Fights</h1>
+        <div class="red-underline"></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body p-0">
+                    <%= form_tag fights_path, method: :get, id: "filter-form" do %>
+                        <div class="row g-0 filter-row">
+                            <!-- Division Filter -->
+                            <div class="col-md-4 border-end filter-col">
+                                
+                            </div>
+                        </div>
+                    <% end %>
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -2,23 +2,33 @@ Rails.application.routes.draw do
   devise_for :editors
   devise_for :spectators
   devise_for :coaches
-  devise_for :boxers
+  devise_for :boxers, controllers: { registrations: 'boxers/registrations' }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # Paths
+
+  # General Routes
   root "main#index"
   get "/signup", to: "main#sign_up"
   get "/results", to: "main#results"
   get "/fixtures", to: "main#fixtures"
   get "/coach_profile", to: "coaches#profile", as: :coach_profile
   get "/assign_boxers", to: "coaches#assign_boxers", as: :assign_boxers
+
+  # Coach Routes
+  patch "/update_attributes/:boxer_id", to: "coaches#update_attributes", as: :update_attributes
+  post "/send_add_request/:boxer_id", to: "coaches#send_add_request", as: :send_add_request_coach
+  delete "/cancel_request/:boxer_id", to: "coaches#cancel_request", as: :cancel_request_coach
+
+  # Boxer Routes
   get "/boxer_profile/:id", to: "boxers#profile", as: :boxer_profile
   get "/boxer_details", to: "boxers#details", as: :boxer_details
   get "/edit_boxer_ratings/:boxer_id", to: "coaches#edit_boxer", as: :edit_boxer_ratings
   patch "/update_details", to: "boxers#update_details", as: :update_details_boxer
-  patch "/update_attributes/:boxer_id", to: "coaches#update_attributes", as: :update_attributes
-  post "/send_add_request/:boxer_id", to: "coaches#send_add_request", as: :send_add_request_coach
-  delete "/cancel_request/:boxer_id", to: "coaches#cancel_request", as: :cancel_request_coach
+
+  # Editor Routes
+  get "/manage_fixtures", to: "editors#manage_fixtures"
+  get "/manage_results", to: "editors#manage_results"
+  get "/fights", to: "editors#fights"
 
   # Resources
   namespace :users do

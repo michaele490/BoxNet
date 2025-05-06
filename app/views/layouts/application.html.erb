@@ -81,7 +81,7 @@
           <% elsif spectator_signed_in? %>
             <div class="dropdown account-dropdown">
               <button class="navbar-button account dropdown-toggle">
-                <%= current_spectator.username %>
+                <%= current_spectator.full_name %>
               </button>
               <div class="dropdown-content account-dropdown-content">
                 <%= link_to "Profile", '#', class: "navbar-link account-options" %>
@@ -94,12 +94,11 @@
           <% elsif editor_signed_in? %>
             <div class="dropdown account-dropdown">
               <button class="navbar-button account dropdown-toggle">
-                <%= current_editor.username %>
+                <%= current_editor.full_name %>
               </button>
               <div class="dropdown-content account-dropdown-content">
-                <%= link_to "Profile", '#', class: "navbar-link account-options" %> 
-                <%= link_to "Upcoming", '#', class: "navbar-link account-options" %>
-                <%= link_to "Results", '#', class: "navbar-link account-options" %>
+                <%= link_to "Fixtures", manage_fixtures_path, class: "navbar-link account-options" %>
+                <%= link_to "Results", manage_results_path, class: "navbar-link account-options" %>
                 <%= link_to "Sign Out", destroy_editor_session_path, method: :delete, class: "navbar-link account-options" %>
               </div>
             </div>
