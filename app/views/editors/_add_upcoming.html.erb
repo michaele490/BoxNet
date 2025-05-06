@@ -1,0 +1,81 @@
+<div id="add-fight-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="close-modal-btn">&times;</span>
+    <h2 class="text-center mb-4">New Upcoming Fight</h2>
+    <form>
+      <div class="form-group">
+        <label>Boxer 1 Full Name</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Boxer 2 Full Name</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Weight Class</label>
+        <select class="form-control">
+          <option>Lightweight</option>
+          <option>Welterweight</option>
+          <!-- Add more as needed -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="d-flex justify-content-center gap-2 mt-3">
+        <button type="submit" class="btn btn-dark">Save</button>
+        <button type="button" class="btn btn-outline-dark" id="cancel-modal-btn">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 28px 24px 28px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .modal-content label {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .modal-content input, .modal-content select {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      padding: 6px 10px;
+      font-size: 1rem;
+    }
+  </style>
+</div> 

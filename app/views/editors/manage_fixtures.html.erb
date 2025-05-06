@@ -5,20 +5,157 @@
     </div>
 
     <!-- Filters -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
         <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-body p-0">
-                    <%= form_tag fights_path, method: :get, id: "filter-form" do %>
-                        <div class="row g-0 filter-row">
-                            <!-- Division Filter -->
-                            <div class="col-md-4 border-end filter-col">
-                                
-                            </div>
+            <%= form_tag fights_path, method: :get, id: "filter-form" do %>
+                <div class="editor-filter-card">
+                    <!-- Date Range Filter -->
+                    <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 140px;">
+                        <label class="form-label mb-1">Date</label>
+                        <div class="d-flex gap-1">
+                            <input type="date" name="date_from" value="<%= params[:date_from] %>" class="form-control form-control-sm" style="width: 130px;" placeholder="From">
+                            <input type="date" name="date_to" value="<%= params[:date_to] %>" class="form-control form-control-sm" style="width: 130px;" placeholder="To">
                         </div>
-                    <% end %>
-            </div>
+                    </div>
+                    <!-- Division Filter -->
+                    <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 120px;">
+                        <label class="form-label mb-1">Division</label>
+                        <select name="division" id="division-select" class="slim-select" style="min-width: 110px;">
+                            <option value="">All</option>
+                            <% Boxer::WEIGHT_CLASSES.each do |division| %>
+                                <option value="<%= division %>" <%= 'selected' if params[:division] == division %>><%= division.titleize %></option>
+                            <% end %>
+                        </select>
+                    </div>
+                    <!-- Gender Filter -->
+                    <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 100px;">
+                        <label class="form-label mb-1">Gender</label>
+                        <select name="gender" id="gender-select" class="slim-select" style="min-width: 90px;">
+                            <option value="">All</option>
+                            <option value="Male" <%= 'selected' if params[:gender] == 'Male' %>>Male</option>
+                            <option value="Female" <%= 'selected' if params[:gender] == 'Female' %>>Female</option>
+                        </select>
+                    </div>
+                    <!-- Boxer Name Search -->
+                    <div class="d-flex flex-column align-items-start justify-content-center" style="min-width: 240px;">
+                        <label class="form-label mb-1">&nbsp;</label>
+                        <div class="input-group">
+                            <input type="text" name="search" value="<%= params[:search] %>" class="form-control form-control-sm" placeholder="Enter boxer name" style="min-width: 180px;">
+                            <button type="submit" class="btn btn-light btn-sm" style="height: 38px; border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+
+    <!-- Added Fixtures -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <% if @fights.any? %>
+                <%= render 'fights/fights' %>
+            <% else %>
+                <p class="text-center"><i>No upcoming fights</i></p>
+            <% end %>
+        </div>
+    </div>
+
+    <!-- Add new fights button -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8 d-flex justify-content-center">
+            <%= link_to 'Add Upcoming Fight', '#', class: 'btn btn-primary' %>
         </div>
     </div>
     
+    <%= render 'editors/add_upcoming' %>
 </div>
+
+<% content_for :head do %>
+    <style>
+        .red-underline {
+            height: 2px;
+            background-color: #ba0404;
+            width: 95%;
+            margin: 0 auto;
+        }
+        .editor-filter-card {
+            background: #ba0404;
+            border-radius: 10px;
+            padding: 18px 30px 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .editor-filter-card label.form-label {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .editor-filter-card .form-control,
+        .editor-filter-card .form-select {
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+            min-width: 120px;
+            box-shadow: none;
+        }
+        .editor-filter-card .form-control:focus,
+        .editor-filter-card .form-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #fff2;
+            border: none;
+        }
+        .editor-filter-card .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            min-width: 70px;
+        }
+        @media (max-width: 900px) {
+            .editor-filter-card {
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px 10px;
+            }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.css" rel="stylesheet">
+<% end %>
+
+<% content_for :javascript do %>
+    <script src="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        new SlimSelect({ select: '#division-select' });
+        new SlimSelect({ select: '#gender-select' });
+
+        // Modal logic
+        document.querySelectorAll('a.btn.btn-primary').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('add-fight-modal').style.display = 'flex';
+          });
+        });
+        var closeBtn = document.getElementById('close-modal-btn');
+        if (closeBtn) {
+          closeBtn.onclick = function() {
+            document.getElementById('add-fight-modal').style.display = 'none';
+          };
+        }
+        var cancelBtn = document.getElementById('cancel-modal-btn');
+        if (cancelBtn) {
+          cancelBtn.onclick = function() {
+            document.getElementById('add-fight-modal').style.display = 'none';
+          };
+        }
+      });
+    </script>
+<% end %>
