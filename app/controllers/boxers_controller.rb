@@ -39,7 +39,7 @@ class BoxersController < ApplicationController
     def autocomplete
       term = params[:term]
       boxers = Boxer.where("first_name ILIKE ? OR last_name ILIKE ? OR (first_name || ' ' || last_name) ILIKE ?", "%#{term}%", "%#{term}%", "%#{term}%").limit(10)
-      render json: boxers.map { |b| { id: b.id, name: b.full_name } }
+      render json: boxers.map { |b| { id: b.id, name: b.name_with_id } }
     end
 
     private

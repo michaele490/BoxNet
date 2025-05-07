@@ -3,29 +3,23 @@
     <div class="d-flex align-items-center gap-4 flex-grow-1">
       <div class="fight-date text-muted" style="min-width: 140px;">
         <i class="fas fa-calendar-alt me-1"></i>
-        <%= fight.fight_date&.strftime('%B %d, %Y') %>
+        <%= fight.fight_date&.strftime('%B %d, %Y') || 'TBD' %>
       </div>
       <div class="fight-boxer-a text-end" style="min-width: 180px;">
         <strong><%= fight.boxer_a.full_name %></strong>
-        <span class="ms-2 text-success"><%= fight.boxer_a.wins if fight.boxer_a.respond_to?(:wins) %></span>
-        <span class="ms-1 text-danger"><%= fight.boxer_a.losses if fight.boxer_a.respond_to?(:losses) %></span>
-        <span class="ms-1 text-warning"><%= fight.boxer_a.draws if fight.boxer_a.respond_to?(:draws) %></span>
       </div>
       <div class="fight-vs text-center" style="min-width: 60px;">
-        <span class="badge bg-primary" style="font-size: 1.1rem; padding: 8px 18px;">VS</span>
+        <span class="badge bg-primary" style="font-size: 14px; padding: 3px 16px; line-height: 1.1;">VS</span>
       </div>
       <div class="fight-boxer-b text-start" style="min-width: 180px;">
         <strong><%= fight.boxer_b.full_name %></strong>
-        <span class="ms-2 text-success"><%= fight.boxer_b.wins if fight.boxer_b.respond_to?(:wins) %></span>
-        <span class="ms-1 text-danger"><%= fight.boxer_b.losses if fight.boxer_b.respond_to?(:losses) %></span>
-        <span class="ms-1 text-warning"><%= fight.boxer_b.draws if fight.boxer_b.respond_to?(:draws) %></span>
       </div>
       <div class="fight-division text-muted" style="min-width: 120px;">
         Division: <%= fight.weight_class&.titleize %>
       </div>
       <div class="fight-venue text-muted" style="min-width: 180px;">
         <i class="fas fa-map-marker-alt me-1"></i>
-        <%= [fight.city, fight.country].compact.join(', ') %>
+        <%= fight.fight_location %>
       </div>
     </div>
     <a href="#" class="edit-fight-btn ms-3" data-fight-id="<%= fight.id %>" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #fff0f0; border: 1.5px solid #ba0404;">
@@ -42,9 +36,35 @@
   .edit-fight-btn:hover {
     background: #ba0404;
     border-color: #ba0404;
+    text-decoration: none;
   }
   .edit-fight-btn:hover i {
     color: #fff;
+  }
+  .edit-fight-btn i,
+  .edit-fight-btn i:before,
+  .edit-fight-btn i:after {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #ba0404 !important; /* Ensures the icon stays red */
+  }
+  .edit-fight-btn svg path {
+    stroke: #ba0404 !important;
+    fill: #ba0404 !important;
+  }
+  .edit-fight-btn,
+  .edit-fight-btn:focus,
+  .edit-fight-btn:active,
+  .edit-fight-btn:visited {
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .badge-primary {
+    background: #7badff !important;
   }
 </style>
 <script>
@@ -58,4 +78,4 @@
       });
     });
   });
-</script>
+</script> 

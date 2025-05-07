@@ -64,4 +64,8 @@ class Boxer < ApplicationRecord
     # Return HTML safe string with flag icon
     "<span class='fi fi-#{code} me-2'></span>#{nationality}".html_safe
   end
+
+  def name_with_id
+    "#{full_name} | (ID: #{id})"
+  end
 end

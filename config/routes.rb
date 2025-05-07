@@ -72,4 +72,6 @@ Rails.application.routes.draw do
   delete 'boxers/:id/remove', to: 'boxers#remove', as: 'remove_boxer'
 
   get '/boxers/autocomplete', to: 'boxers#autocomplete'
+
+  resources :fights, only: [:create, :update]
 end

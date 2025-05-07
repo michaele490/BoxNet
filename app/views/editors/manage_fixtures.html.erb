@@ -55,7 +55,10 @@
     <div class="row justify-content-center mb-4">
         <div class="col-md-10">
             <% if @fights.any? %>
-                <%= render 'fights/fights' %>
+                <%= render 'editors/editor_schedule' %>
+                <% @fights.each do |fight| %>
+                  <%= render partial: 'editors/edit_fight', locals: { fight: fight } %>
+                <% end %>
             <% else %>
                 <p class="text-center"><i>No upcoming fights</i></p>
             <% end %>

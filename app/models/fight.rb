@@ -27,6 +27,18 @@ class Fight < ApplicationRecord
     validates :weight_class, inclusion: { in: WEIGHT_CLASSES }, allow_nil: true
     validate :boxers_must_be_different
 
+    def fight_location
+        if city.present? && country.present?
+            [city, country].join(', ')
+        elsif city.present?
+            city
+        elsif country.present?
+            country
+        else
+            'TBD'
+        end
+    end
+
     private
     
     def boxers_must_be_different
