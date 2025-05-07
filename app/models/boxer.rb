@@ -9,6 +9,8 @@ class Boxer < ApplicationRecord
 
   belongs_to :coach, optional: true
   has_many :boxer_requests, dependent: :destroy
+  has_many :fights_as_a, class_name: 'Fight', foreign_key: 'boxer_a_id'
+  has_many :fights_as_b, class_name: 'Fight', foreign_key: 'boxer_b_id'
 
   WEIGHT_CLASSES = [
     "minimum",
@@ -67,5 +69,9 @@ class Boxer < ApplicationRecord
 
   def name_with_id
     "#{full_name} | (ID: #{id})"
+  end
+
+  def all_fights
+    (fights_as_a + fights_as_b).uniq
   end
 end

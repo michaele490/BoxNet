@@ -39,6 +39,14 @@ class Fight < ApplicationRecord
         end
     end
 
+    def opponent_for(boxer)
+        boxer_a == boxer ? boxer_b : boxer_a
+    end
+
+    def boxer_in_question(boxer)
+        boxer_a == boxer ? :a : :b
+    end
+
     private
     
     def boxers_must_be_different

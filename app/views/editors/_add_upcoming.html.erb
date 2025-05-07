@@ -2,7 +2,7 @@
   <div class="modal-content">
     <span class="close-modal" id="close-modal-btn">&times;</span>
     <h2 class="text-center mb-4">New Upcoming Fight</h2>
-    <%= form_with model: @fight, url: fights_path, method: :post, local: true do |f| %>
+    <%= form_with model: Fight.new, url: fights_path, method: :post, local: true do |f| %>
       <div class="form-group">
         <label class="form-label">Boxer 1</label>
         <input id="boxer1-input" class="form-control awesomplete" type="text" autocomplete="off" placeholder="Type name to search for a boxer..." />
