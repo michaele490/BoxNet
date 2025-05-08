@@ -41,12 +41,12 @@
           <%= f.select :winner_id, 
               options_for_select([
                 ['Draw', 'draw'],
-                ['No Contest', 'no_contest'],
                 [fight.boxer_a.full_name, fight.boxer_a.id],
                 [fight.boxer_b.full_name, fight.boxer_b.id]
               ], fight.winner_id || (fight.draw ? 'draw' : nil)),
-              { include_blank: 'Select winner...' },
-              { class: 'form-control', id: "fight-winner-#{fight.id}", onchange: "toggleDrawField(#{fight.id})" } %>
+              { include_blank: 'Select winner...', required: true },
+              { class: 'form-control', id: "fight-winner-#{fight.id}", onchange: "toggleDrawField(#{fight.id}); handleDrawSelection(#{fight.id});" } %>
+          <%= f.hidden_field :draw, id: "fight-draw-#{fight.id}" %>
         </div>
         <div class="form-group" id="method-field-<%= fight.id %>" style="display: <%= fight.winner_id.present? && !['draw', 'no_contest'].include?(fight.winner_id.to_s) ? 'block' : 'none' %>">
           <label class="form-label">Method</label>
@@ -181,5 +181,26 @@
         methodField.style.display = 'none';
       }
     }
+
+    function handleDrawSelection(fightId) {
+      const winnerSelect = document.getElementById(`fight-winner-${fightId}`);
+      const drawField = document.getElementById(`fight-draw-${fightId}`);
+      if (winnerSelect.value === 'draw') {
+        drawField.value = true;
+      } else {
+        drawField.value = false;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.querySelector(`#edit-fight-modal-${fight.id} form`);
+      form.addEventListener('submit', function(e) {
+        const winnerSelect = document.getElementById(`fight-winner-${fight.id}`);
+        if (!winnerSelect.value) {
+          alert('Please choose a winner or select Draw');
+          e.preventDefault();
+        }
+      });
+    });
   </script>
 </div> 

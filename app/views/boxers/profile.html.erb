@@ -39,7 +39,7 @@
             <div class="info-item">
               <strong>Reach:</strong>
               <% if @boxer.reach.present? %>
-                <%= @boxer.reach %>m
+                <%= @boxer.reach %>m / <%= @boxer.meters_to_feet_inches(@boxer.reach) %>
               <% else %>
                 N/A
               <% end %>
@@ -91,17 +91,17 @@
           <div class="red-underline mb-4"></div>
           
           <div class="record-box wins">
-            <div class="record-number"><%= @boxer.boxer_record.wins %></div>
+            <div class="record-number"><%= @boxer.boxer_record.wins %> Wins</div>
             <div class="record-detail"><%= @boxer.boxer_record.knockout_wins %> KOs</div>
           </div>
           
           <div class="record-box losses">
-            <div class="record-number"><%= @boxer.boxer_record.losses %></div>
+            <div class="record-number"><%= @boxer.boxer_record.losses %> Losses</div>
             <div class="record-detail"><%= @boxer.boxer_record.knockout_losses %> KOs</div>
           </div>
           
           <div class="record-box draws">
-            <div class="record-number"><%= @boxer.boxer_record.draws %></div>
+            <div class="record-number"><%= @boxer.boxer_record.draws %> Draws</div>
           </div>
         </div>
       </div>

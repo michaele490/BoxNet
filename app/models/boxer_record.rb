@@ -2,7 +2,7 @@ class BoxerRecord < ApplicationRecord
   belongs_to :boxer
 
   def total_fights
-    boxer.fights_as_a.where(status: 'occured').count + boxer.fights_as_b.where(status: 'occured').count
+    boxer.fights_as_a.where(status: 'occurred').count + boxer.fights_as_b.where(status: 'occurred').count
   end
   
   validate :knockout_wins_cannot_exceed_wins
@@ -13,7 +13,21 @@ class BoxerRecord < ApplicationRecord
     self.wins = record[:wins]
     self.losses = record[:losses]
     self.draws = record[:draws]
+    self.knockout_wins = record[:knockout_wins]
+    self.knockout_losses = record[:knockout_losses]
     save!
+  end
+
+  def wins
+    calculate_record[:wins]
+  end
+
+  def losses 
+    calculate_record[:losses]
+  end
+
+  def draws
+    calculate_record[:draws]
   end
 
   private
@@ -35,41 +49,43 @@ class BoxerRecord < ApplicationRecord
     losses = 0
     draws = 0
 
+    knockout_wins = 0
+    knockout_losses = 0
+
     # Check fights where boxer is boxer_a
-    boxer.fights_as_a.where(status: 'occured').each do |fight|
+    boxer.fights_as_a.where(status: 'occurred').each do |fight|
       if fight.winner_id == boxer.id
         wins += 1
+        if fight.method == 'knockout'
+          knockout_wins += 1
+        end
       elsif fight.winner_id.nil? # Draw
         draws += 1
       else
         losses += 1
+        if fight.method == 'knockout'
+          knockout_losses += 1
+        end
       end
     end
 
     # Check fights where boxer is boxer_b 
-    boxer.fights_as_b.where(status: 'occured').each do |fight|
+    boxer.fights_as_b.where(status: 'occurred').each do |fight|
       if fight.winner_id == boxer.id
         wins += 1
+        if fight.method == 'knockout'
+          knockout_wins += 1
+        end
       elsif fight.winner_id.nil? # Draw
         draws += 1
       else
         losses += 1
+        if fight.method == 'knockout'
+          knockout_losses += 1
+        end
       end
     end
 
-    {wins: wins, losses: losses, draws: draws}
+    {wins: wins, losses: losses, draws: draws, knockout_wins: knockout_wins, knockout_losses: knockout_losses}
   end
-
-  def wins
-    calculate_record[:wins]
-  end
-
-  def losses 
-    calculate_record[:losses]
-  end
-
-  def draws
-    calculate_record[:draws]
-  end
-  
 end
