@@ -55,5 +55,11 @@ class Fight < ApplicationRecord
         end
     end
     
+    def same_gender
+        if boxer_a.gender != boxer_b.gender
+            errors.add(:boxer_b, "Boxers must be of the same gender")
+            alert("Boxers must be of the same gender")
+        end
+    end
     
 end

@@ -20,9 +20,26 @@ class FightsController < ApplicationController
         end
     end
 
+    def destroy
+        @fight = Fight.find(params[:id])
+        @fight.destroy
+        redirect_to manage_fixtures_path, notice: 'Fight was successfully deleted.'
+    end
+
     private
     def fight_params
-        params.require(:fight).permit(:boxer_a_id, :boxer_b_id, :fight_date, :weight_class, :country, :city)
+        params.require(:fight).permit(
+            :boxer_a_id, 
+            :boxer_b_id, 
+            :fight_date, 
+            :weight_class, 
+            :country, 
+            :city,
+            :status,
+            :winner_id,
+            :method,
+            :draw
+        )
     end
 end
 

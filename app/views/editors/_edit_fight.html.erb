@@ -29,11 +29,46 @@
         <label>City</label>
         <%= f.text_field :city, class: 'form-control', value: fight.city %>
       </div>
-      <div class="d-flex justify-content-center gap-2 mt-3">
-        <%= f.submit 'Save', class: 'btn btn-dark' %>
-        <button type="button" class="btn btn-outline-dark" onclick="document.getElementById('edit-fight-modal-<%= fight.id %>').style.display='none'">Cancel</button>
+      <div class="form-group">
+        <div class="form-check">
+          <%= f.check_box :status, { class: 'form-check-input', id: "fight-status-#{fight.id}", onchange: "toggleFightResultFields(#{fight.id})" }, 'occurred', 'scheduled' %>
+          <label class="form-check-label" for="fight-status-<%= fight.id %>">Fight has occurred</label>
+        </div>
+      </div>
+      <div id="fight-result-fields-<%= fight.id %>" style="display: <%= fight.status == 'occurred' ? 'block' : 'none' %>">
+        <div class="form-group">
+          <label class="form-label">Result</label>
+          <%= f.select :winner_id, 
+              options_for_select([
+                ['Draw', 'draw'],
+                ['No Contest', 'no_contest'],
+                [fight.boxer_a.full_name, fight.boxer_a.id],
+                [fight.boxer_b.full_name, fight.boxer_b.id]
+              ], fight.winner_id || (fight.draw ? 'draw' : nil)),
+              { include_blank: 'Select winner...' },
+              { class: 'form-control', id: "fight-winner-#{fight.id}", onchange: "toggleDrawField(#{fight.id})" } %>
+        </div>
+        <div class="form-group" id="method-field-<%= fight.id %>" style="display: <%= fight.winner_id.present? && !['draw', 'no_contest'].include?(fight.winner_id.to_s) ? 'block' : 'none' %>">
+          <label class="form-label">Method</label>
+          <%= f.select :method, 
+              options_for_select([
+                ['Knockout', 'knockout'],
+                ['Decision', 'decision']
+              ], fight.method),
+              { include_blank: 'Select method...' },
+              { class: 'form-control' } %>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between gap-2 mt-3">
+        <div>
+          <%= f.submit 'Save', class: 'btn btn-dark' %>
+          <button type="button" class="btn btn-outline-dark" onclick="document.getElementById('edit-fight-modal-<%= fight.id %>').style.display='none'">Cancel</button>
+        </div>
       </div>
     <% end %>
+    <div class="d-flex justify-content-end mt-2">
+      <%= button_to 'Delete Fight', fight_path(fight), method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to delete this fight?' } %>
+    </div>
   </div>
   <style>
     .modal-overlay {
@@ -53,6 +88,8 @@
       width: 100%;
       box-shadow: 0 4px 32px rgba(0,0,0,0.12);
       position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .close-modal {
       position: absolute;
@@ -119,5 +156,30 @@
       setupBoxerAutocomplete('edit-boxer1-input-<%= fight.id %>', 'edit-boxer1-id-<%= fight.id %>');
       setupBoxerAutocomplete('edit-boxer2-input-<%= fight.id %>', 'edit-boxer2-id-<%= fight.id %>');
     });
+
+    function toggleFightResultFields(fightId) {
+      const checkbox = document.getElementById(`fight-status-${fightId}`);
+      const resultFields = document.getElementById(`fight-result-fields-${fightId}`);
+      resultFields.style.display = checkbox.checked ? 'block' : 'none';
+      
+      if (!checkbox.checked) {
+        // Reset fields when unchecked
+        document.getElementById(`fight-winner-${fightId}`).value = '';
+        document.getElementById(`method-field-${fightId}`).style.display = 'none';
+      }
+    }
+
+    function toggleDrawField(fightId) {
+      const winnerSelect = document.getElementById(`fight-winner-${fightId}`);
+      const methodField = document.getElementById(`method-field-${fightId}`);
+      
+      if (['draw', 'no_contest'].includes(winnerSelect.value)) {
+        methodField.style.display = 'none';
+      } else if (winnerSelect.value) {
+        methodField.style.display = 'block';
+      } else {
+        methodField.style.display = 'none';
+      }
+    }
   </script>
 </div> 
