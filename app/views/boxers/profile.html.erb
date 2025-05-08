@@ -23,7 +23,7 @@
               <strong>Gender:</strong> <%= @boxer.gender || "N/A" %>
             </div>
             <div class="info-item">
-              <strong>Total Fights:</strong> 22
+              <strong>Total Fights:</strong> <%= @boxer.boxer_record.total_fights %>
             </div>
             <div class="info-item">
               <strong>Coach:</strong> <%= @boxer.coach ? @boxer.coach.full_name : "N/A" %>
@@ -91,17 +91,17 @@
           <div class="red-underline mb-4"></div>
           
           <div class="record-box wins">
-            <div class="record-number">15 Wins</div>
-            <div class="record-detail">6 KOs</div>
+            <div class="record-number"><%= @boxer.boxer_record.wins %></div>
+            <div class="record-detail"><%= @boxer.boxer_record.knockout_wins %> KOs</div>
           </div>
           
           <div class="record-box losses">
-            <div class="record-number">5 Losses</div>
-            <div class="record-detail">1 KO</div>
+            <div class="record-number"><%= @boxer.boxer_record.losses %></div>
+            <div class="record-detail"><%= @boxer.boxer_record.knockout_losses %> KOs</div>
           </div>
           
           <div class="record-box draws">
-            <div class="record-number">2 Draws</div>
+            <div class="record-number"><%= @boxer.boxer_record.draws %></div>
           </div>
         </div>
       </div>

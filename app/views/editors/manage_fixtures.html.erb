@@ -64,7 +64,7 @@
 
     <%# Render edit modals for each fight, but not as visible cards %>
     <% @fights.each do |fight| %>
-      <%= render partial: 'editors/edit_fight', locals: { fight: fight } %>
+        <%= render partial: 'editors/edit_fight', locals: { fight: fight } %>
     <% end %>
 
     <!-- Add new fights button -->

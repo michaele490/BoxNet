@@ -9,6 +9,7 @@ class Boxer < ApplicationRecord
 
   belongs_to :coach, optional: true
   has_many :boxer_requests, dependent: :destroy
+  has_one :boxer_record, dependent: :destroy
   has_many :fights_as_a, class_name: 'Fight', foreign_key: 'boxer_a_id'
   has_many :fights_as_b, class_name: 'Fight', foreign_key: 'boxer_b_id'
 
@@ -38,6 +39,8 @@ class Boxer < ApplicationRecord
   validates :last_name, presence: true
   validates :username, presence: true, uniqueness: true
   validates :nationality, inclusion: { in: ISO3166::Country.translations.values }, allow_nil: true
+
+  after_create :create_boxer_record
 
   def full_name
     "#{first_name} #{last_name}"
@@ -73,5 +76,12 @@ class Boxer < ApplicationRecord
 
   def all_fights
     (fights_as_a + fights_as_b).uniq
+  end
+
+  private
+
+  def create_boxer_record
+    # Add any default values you want for the record here
+    BoxerRecord.create(boxer: self)
   end
 end

@@ -73,5 +73,5 @@ Rails.application.routes.draw do
 
   get '/boxers/autocomplete', to: 'boxers#autocomplete'
 
-  resources :fights, only: [:create, :update]
+  resources :fights, only: [:create, :update, :destroy]
 end

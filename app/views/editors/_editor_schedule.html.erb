@@ -1,7 +1,7 @@
 <div class="fight-table-wrapper" style="width: 95%; margin: 0 auto;">
   <table class="fight-table" style="width: 100%; border-collapse: separate; border-spacing: 0 16px;">
     <tbody>
-      <% @fights.each do |fight| %>
+      <% @fights.reject { |fight| fight.status == 'occurred' }.each do |fight| %>
         <tr class="fight-row" style="background: #fff;">
           <td class="fight-date text-muted" style="min-width: 140px; padding: 18px 12px; vertical-align: middle;">
             <i class="fas fa-calendar-alt me-1"></i>

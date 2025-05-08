@@ -27,8 +27,12 @@ class Fight < ApplicationRecord
     validates :weight_class, inclusion: { in: WEIGHT_CLASSES }, allow_nil: true
     validate :boxers_must_be_different
 
+    after_initialize :set_default_status, if: :new_record?
+    after_save :update_boxers_records
+    after_destroy :update_boxers_records
+
     def fight_location
-        if city.present? && country.present?
+        computed_location = if city.present? && country.present?
             [city, country].join(', ')
         elsif city.present?
             city
@@ -37,6 +41,11 @@ class Fight < ApplicationRecord
         else
             'TBD'
         end
+        if self.location != computed_location
+          self.location = computed_location
+          save!
+        end
+        computed_location
     end
 
     def opponent_for(boxer)
@@ -60,6 +69,15 @@ class Fight < ApplicationRecord
             errors.add(:boxer_b, "Boxers must be of the same gender")
             alert("Boxers must be of the same gender")
         end
+    end
+    
+    def set_default_status
+      self.status ||= 'scheduled'
+    end
+    
+    def update_boxers_records
+      boxer_a.boxer_record&.update_record_stats!
+      boxer_b.boxer_record&.update_record_stats!
     end
     
 end
