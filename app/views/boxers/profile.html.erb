@@ -115,16 +115,22 @@
           <div class="red-underline mb-3"></div>
           
           <div class="results-list">
-            <% 5.times do |i| %>
+            <% (@boxer.fights_as_a.where(status: 'occurred') + @boxer.fights_as_b.where(status: 'occurred')).sort_by { |f| f.fight_date || f.created_at }.reverse.each do |fight| %>
               <div class="result-item">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h5 class="mb-1">Sample Boxer vs Past Opponent <%= i + 1 %></h5>
-                    <small class="text-muted">April <%= 29 - (i * 7) %>, 2025</small>
+                    <h5 class="mb-1">
+                      <%= @boxer.full_name %> vs <%= fight.opponent_for(@boxer).full_name %>
+                    </h5>
+                    <small class="text-muted"><%= (fight.fight_date || fight.created_at).strftime("%B %d, %Y") %></small>
                   </div>
-                  <span class="badge <%= i.even? ? 'bg-success' : 'bg-danger' %>">
-                    <%= i.even? ? 'Win' : 'Loss' %>
-                  </span>
+                  <% if fight.draw %>
+                    <span class="badge bg-warning text-dark">Draw</span>
+                  <% elsif fight.winner_id == @boxer.id %>
+                    <span class="badge bg-success">Win</span>
+                  <% else %>
+                    <span class="badge bg-danger">Loss</span>
+                  <% end %>
                 </div>
               </div>
             <% end %>
