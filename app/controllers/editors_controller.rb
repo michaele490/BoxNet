@@ -26,6 +26,8 @@ class EditorsController < ApplicationController
             f.boxer_a.full_name.downcase.include?(search) || f.boxer_b.full_name.downcase.include?(search)
           end
         end
+
+        @fights = @fights.sort_by { |f| f.fight_date || Date.new(1900,1,1) }.reverse
     end
 
     def manage_results
@@ -53,6 +55,8 @@ class EditorsController < ApplicationController
             f.boxer_a.full_name.downcase.include?(search) || f.boxer_b.full_name.downcase.include?(search)
           end
         end
+
+        @fights = @fights.sort_by { |f| f.fight_date || Date.new(1900,1,1) }.reverse
     end
 
     def fights
@@ -62,7 +66,7 @@ class EditorsController < ApplicationController
     def create
         @fight = Fight.new(fight_params)
         @fight.editor = current_editor
-        # Ensure status is 'occurred' for results
+        # Ensure fight is a result not a fixture
         @fight.status = 'occurred'
         # Handle draw logic
         if params[:fight][:winner_id] == 'draw'
