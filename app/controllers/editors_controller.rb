@@ -2,7 +2,30 @@ class EditorsController < ApplicationController
     before_action :authenticate_editor!
 
     def manage_fixtures
-        @fights = Fight.all
+        @fights = Fight.includes(:boxer_a, :boxer_b).all
+
+        if params[:date_from].present?
+          @fights = @fights.where('fight_date >= ?', params[:date_from])
+        end
+        if params[:date_to].present?
+          @fights = @fights.where('fight_date <= ?', params[:date_to])
+        end
+        if params[:division].present? && params[:division] != ""
+          @fights = @fights.where(weight_class: params[:division])
+        end
+
+        # Filter by gender (either boxer_a or boxer_b matches)
+        if params[:gender].present? && params[:gender] != ""
+          @fights = @fights.select { |f| f.boxer_a.gender == params[:gender] || f.boxer_b.gender == params[:gender] }
+        end
+
+        # Filter by boxer name (either boxer_a or boxer_b matches)
+        if params[:search].present? && params[:search] != ""
+          search = params[:search].downcase
+          @fights = @fights.select do |f|
+            f.boxer_a.full_name.downcase.include?(search) || f.boxer_b.full_name.downcase.include?(search)
+          end
+        end
     end
 
     def manage_results

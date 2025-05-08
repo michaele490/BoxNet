@@ -7,8 +7,8 @@
     <!-- Filters -->
     <div class="row justify-content-center mb-5">
         <div class="col-md-8">
-            <%= form_tag fights_path, method: :get, id: "filter-form" do %>
-                <div class="editor-filter-card">
+            <%= form_tag manage_fixtures_path, method: :get, id: "filter-form", remote: true do %>
+                <div class="editor-filter-card" style="flex-wrap: wrap;">
                     <!-- Date Range Filter -->
                     <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 140px;">
                         <label class="form-label mb-1">Date</label>
@@ -37,11 +37,11 @@
                         </select>
                     </div>
                     <!-- Boxer Name Search -->
-                    <div class="d-flex flex-column align-items-start justify-content-center" style="min-width: 240px;">
+                    <div class="d-flex flex-column align-items-start justify-content-center" style="min-width: 240px; width: 100%; max-width: 320px; flex: 1;">
                         <label class="form-label mb-1">&nbsp;</label>
-                        <div class="input-group">
-                            <input type="text" name="search" value="<%= params[:search] %>" class="form-control form-control-sm" placeholder="Enter boxer name" style="min-width: 180px;">
-                            <button type="submit" class="btn btn-light btn-sm" style="height: 38px; border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                        <div class="search-bar-wrapper" style="width: 100%; position: relative; height: 38px; display: flex; align-items: center;">
+                            <input type="text" name="search" value="<%= params[:search] %>" class="form-control form-control-sm" placeholder="Enter boxer name" style="min-width: 180px; max-width: 320px; height: 38px; width: 100%;">
+                            <button type="submit" class="search-icon-btn" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: none; background: none; padding: 0; margin: 0; height: 24px; width: 24px; color: #6c757d; cursor: pointer; z-index: 2;">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
@@ -53,17 +53,19 @@
 
     <!-- Added Fixtures -->
     <div class="row justify-content-center mb-4">
-        <div class="col-md-10">
+        <div class="col-md-10" id="fights-table-container">
             <% if @fights.any? %>
                 <%= render 'editors/editor_schedule' %>
-                <% @fights.each do |fight| %>
-                  <%= render partial: 'editors/edit_fight', locals: { fight: fight } %>
-                <% end %>
             <% else %>
                 <p class="text-center"><i>No upcoming fights</i></p>
             <% end %>
         </div>
     </div>
+
+    <%# Render edit modals for each fight, but not as visible cards %>
+    <% @fights.each do |fight| %>
+      <%= render partial: 'editors/edit_fight', locals: { fight: fight } %>
+    <% end %>
 
     <!-- Add new fights button -->
     <div class="row justify-content-center mb-4">
@@ -95,6 +97,7 @@
             width: 100%;
             max-width: 900px;
             margin: 0 auto;
+            flex-wrap: wrap;
         }
         .editor-filter-card label.form-label {
             color: #fff;
@@ -122,6 +125,15 @@
             font-weight: 500;
             min-width: 70px;
         }
+        @media (max-width: 1200px) {
+            .editor-filter-card {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .search-bar-wrapper, .editor-filter-card input[name='search'] {
+                max-width: 100% !important;
+            }
+        }
         @media (max-width: 900px) {
             .editor-filter-card {
                 flex-direction: column;
@@ -129,16 +141,100 @@
                 padding: 18px 10px;
             }
         }
+        .search-bar-wrapper {
+            width: 100%;
+            position: relative;
+            height: 38px;
+            display: flex;
+            align-items: center;
+        }
+        .search-icon-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            height: 24px;
+            width: 24px;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .search-icon-btn:focus {
+            outline: none;
+        }
+        .form-control-sm {
+            height: 38px;
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.css" rel="stylesheet">
 <% end %>
 
 <% content_for :javascript do %>
     <script src="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         new SlimSelect({ select: '#division-select' });
         new SlimSelect({ select: '#gender-select' });
+
+        // Awesomplete autocomplete for boxer search (like assign_boxers)
+        var input = document.querySelector('input[name="search"]');
+        if (input) {
+          var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 10 });
+          input.setAttribute('autocomplete', 'off');
+          input.addEventListener("input", function() {
+            var query = input.value;
+            if (query.length > 0) {
+              fetch("/boxers/autocomplete?term=" + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                  awesomplete.list = data.map(b => b.name);
+                });
+            }
+          });
+        }
+
+        // AJAX filter logic
+        var form = document.getElementById("filter-form");
+        var division = document.getElementById("division-select");
+        var gender = document.getElementById("gender-select");
+        var fightsTableContainer = document.getElementById("fights-table-container");
+
+        function ajaxFilterSubmit() {
+          var formData = new FormData(form);
+          var params = new URLSearchParams(formData).toString();
+          fetch(form.action + '?' + params, {
+            headers: { 'Accept': 'text/vnd.turbo-stream.html, text/html, application/xhtml+xml, application/xml;q=0.9,*/*;q=0.8' }
+          })
+          .then(response => response.text())
+          .then(html => {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            var newTable = tempDiv.querySelector('#fights-table-container');
+            if (newTable && fightsTableContainer) {
+              fightsTableContainer.innerHTML = newTable.innerHTML;
+            }
+          });
+        }
+
+        if (division) {
+          division.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        if (gender) {
+          gender.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          ajaxFilterSubmit();
+        });
 
         // Modal logic
         document.querySelectorAll('a.btn.btn-primary').forEach(function(btn) {

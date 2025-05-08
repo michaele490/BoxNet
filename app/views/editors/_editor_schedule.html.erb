@@ -1,37 +1,49 @@
-<% @fights.each do |fight| %>
-  <div class="fight-row d-flex align-items-center justify-content-between mb-3 p-3" style="background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-    <div class="d-flex align-items-center gap-4 flex-grow-1">
-      <div class="fight-date text-muted" style="min-width: 140px;">
-        <i class="fas fa-calendar-alt me-1"></i>
-        <%= fight.fight_date&.strftime('%B %d, %Y') || 'TBD' %>
-      </div>
-      <div class="fight-boxer-a text-end" style="min-width: 180px;">
-        <strong><%= fight.boxer_a.full_name %></strong>
-      </div>
-      <div class="fight-vs text-center" style="min-width: 60px;">
-        <span class="badge bg-primary" style="font-size: 14px; padding: 3px 16px; line-height: 1.1;">VS</span>
-      </div>
-      <div class="fight-boxer-b text-start" style="min-width: 180px;">
-        <strong><%= fight.boxer_b.full_name %></strong>
-      </div>
-      <div class="fight-division text-muted" style="min-width: 120px;">
-        Division: <%= fight.weight_class&.titleize %>
-      </div>
-      <div class="fight-venue text-muted" style="min-width: 180px;">
-        <i class="fas fa-map-marker-alt me-1"></i>
-        <%= fight.fight_location %>
-      </div>
-    </div>
-    <a href="#" class="edit-fight-btn ms-3" data-fight-id="<%= fight.id %>" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #fff0f0; border: 1.5px solid #ba0404;">
-      <i class="fas fa-pencil-alt" style="color: #ba0404; font-size: 1.2rem;"></i>
-    </a>
-  </div>
-<% end %>
+<div class="fight-table-wrapper" style="width: 95%; margin: 0 auto;">
+  <table class="fight-table" style="width: 100%; border-collapse: separate; border-spacing: 0 16px;">
+    <tbody>
+      <% @fights.each do |fight| %>
+        <tr class="fight-row" style="background: #fff;">
+          <td class="fight-date text-muted" style="min-width: 140px; padding: 18px 12px; vertical-align: middle;">
+            <i class="fas fa-calendar-alt me-1"></i>
+            <%= fight.fight_date&.strftime('%B %d, %Y') || 'TBD' %>
+          </td>
+          <td class="fight-boxer-a text-end" style="min-width: 180px; padding: 18px 12px; vertical-align: middle;">
+            <strong><%= fight.boxer_a.full_name %></strong>
+          </td>
+          <td class="fight-vs text-center" style="min-width: 60px; padding: 18px 12px; vertical-align: middle;">
+            <span class="badge bg-primary" style="font-size: 14px; padding: 3px 16px; line-height: 1.1;">VS</span>
+          </td>
+          <td class="fight-boxer-b text-start" style="min-width: 180px; padding: 18px 12px; vertical-align: middle;">
+            <strong><%= fight.boxer_b.full_name %></strong>
+          </td>
+          <td class="fight-division text-muted" style="min-width: 120px; padding: 18px 12px; vertical-align: middle;">
+            Division: <%= fight.weight_class&.titleize %>
+          </td>
+          <td class="fight-venue text-muted" style="min-width: 180px; padding: 18px 12px; vertical-align: middle;">
+            <i class="fas fa-map-marker-alt me-1"></i>
+            <%= fight.fight_location %>
+          </td>
+          <td style="padding: 18px 12px; vertical-align: middle;">
+            <a href="#" class="edit-fight-btn ms-3" data-fight-id="<%= fight.id %>" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background: #fff0f0; border: 1.5px solid #ba0404;">
+              <i class="fas fa-pencil-alt" style="color: #ba0404; font-size: 1.2rem;"></i>
+            </a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <style>
-  .fight-row:hover {
+  .fight-table-wrapper {
+    margin-bottom: 24px;
+  }
+  .fight-table .fight-row {
+    /*transition: box-shadow 0.2s, background 0.2s;*/
+  }
+  .fight-table .fight-row:hover {
     background: #fff6f6;
-    box-shadow: 0 4px 16px rgba(186,4,4,0.08);
+    /*box-shadow: 0 4px 16px rgba(186,4,4,0.08);*/
   }
   .edit-fight-btn:hover {
     background: #ba0404;
@@ -48,7 +60,7 @@
     border-bottom: none !important;
     box-shadow: none !important;
     outline: none !important;
-    color: #ba0404 !important; /* Ensures the icon stays red */
+    color: #ba0404 !important;
   }
   .edit-fight-btn svg path {
     stroke: #ba0404 !important;
@@ -62,9 +74,27 @@
     outline: none !important;
     box-shadow: none !important;
   }
-
   .badge-primary {
     background: #7badff !important;
+  }
+  .fight-table td {
+    background: inherit;
+    border: none;
+  }
+  table {
+    border-spacing: 0 !important;
+    border-collapse: separate;
+    border: 1.5px solid grey;
+  }
+  .edit-fight-btn {
+    border-radius: 0 !important;
+  }
+  .fight-table .fight-row,
+  .fight-table td {
+    border-radius: 0 !important;
+  }
+  .fight-table tr:not(:last-child) td {
+    border-bottom: 1.5px solid grey;
   }
 </style>
 <script>
