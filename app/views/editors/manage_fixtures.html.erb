@@ -202,6 +202,8 @@
         var form = document.getElementById("filter-form");
         var division = document.getElementById("division-select");
         var gender = document.getElementById("gender-select");
+        var dateFrom = document.querySelector('input[name="date_from"]');
+        var dateTo = document.querySelector('input[name="date_to"]');
         var fightsTableContainer = document.getElementById("fights-table-container");
 
         function ajaxFilterSubmit() {
@@ -228,6 +230,16 @@
         }
         if (gender) {
           gender.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        if (dateFrom) {
+          dateFrom.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        if (dateTo) {
+          dateTo.addEventListener("change", function() {
             ajaxFilterSubmit();
           });
         }

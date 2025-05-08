@@ -5,10 +5,10 @@ class EditorsController < ApplicationController
         @fights = Fight.includes(:boxer_a, :boxer_b).all
 
         if params[:date_from].present?
-          @fights = @fights.where('fight_date >= ?', params[:date_from])
+          @fights = @fights.where('fight_date IS NOT NULL AND fight_date >= ?', params[:date_from])
         end
         if params[:date_to].present?
-          @fights = @fights.where('fight_date <= ?', params[:date_to])
+          @fights = @fights.where('fight_date IS NOT NULL AND fight_date <= ?', params[:date_to])
         end
         if params[:division].present? && params[:division] != ""
           @fights = @fights.where(weight_class: params[:division])
