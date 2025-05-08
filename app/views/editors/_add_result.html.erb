@@ -1,0 +1,190 @@
+<div id="add-result-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="close-result-modal-btn">&times;</span>
+    <h2 class="text-center mb-4">Add New Result</h2>
+    <%= form_with model: Fight.new, url: manage_results_path, method: :post, local: true do |f| %>
+      <div class="form-group">
+        <label class="form-label">Boxer 1</label>
+        <input id="result-boxer-a-input" class="form-control awesomplete" type="text" autocomplete="off" placeholder="Type name to search for a boxer..." />
+        <input type="hidden" id="result-boxer-a-id" name="fight[boxer_a_id]" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Boxer 2</label>
+        <input id="result-boxer-b-input" class="form-control awesomplete" type="text" autocomplete="off" placeholder="Type name to search for a boxer..." />
+        <input type="hidden" id="result-boxer-b-id" name="fight[boxer_b_id]" />
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <%= f.date_field :fight_date, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weight Class</label>
+        <%= f.select :weight_class, Boxer::WEIGHT_CLASSES.map { |wc| [wc.titleize, wc] }, {}, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Country</label>
+        <%= f.select :country, ISO3166::Country.translations.values, {}, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <%= f.text_field :city, class: 'form-control' %>
+      </div>
+      <%= f.hidden_field :status, value: 'occurred' %>
+      <div class="form-group">
+        <label class="form-label">Winner</label>
+        <%= f.select :winner_id, 
+          options_for_select(
+            [['Select winner...', ''], ['Draw', 'draw']] + Boxer.all.map { |b| [b.full_name, b.id] }
+          ), 
+          {}, 
+          class: 'form-control', 
+          required: true 
+        %>
+        <%= f.hidden_field :draw, id: "result-draw-field", value: false %>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Method</label>
+        <%= f.select :method, options_for_select([['Select method...', ''], ['Knockout', 'knockout'], ['Decision', 'decision']]), {}, class: 'form-control', required: true %>
+      </div>
+      <div class="d-flex justify-content-center gap-2 mt-3">
+        <%= f.submit 'Save', class: 'btn btn-dark' %>
+        <button type="button" class="btn btn-outline-dark" id="cancel-result-modal-btn">Cancel</button>
+      </div>
+    <% end %>
+  </div>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 28px 24px 28px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .form-control {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      padding: 6px 10px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    .awesomplete {
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+  <script>
+    function setupBoxerAutocomplete(inputId, hiddenId, winnerSelectId) {
+      var input = document.getElementById(inputId);
+      var hidden = document.getElementById(hiddenId);
+      var winnerSelect = document.getElementById(winnerSelectId);
+      var awesomplete = new Awesomplete(input, {
+        minChars: 1,
+        autoFirst: true,
+        replace: function(suggestion) {
+          this.input.value = suggestion.label;
+        }
+      });
+      input.addEventListener("input", function() {
+        var term = input.value;
+        if (term.length < 1) return;
+        fetch('/boxers/autocomplete?term=' + encodeURIComponent(term))
+          .then(response => response.json())
+          .then(data => {
+            awesomplete.list = data.map(function(boxer) {
+              return { label: boxer.full_name, value: boxer.id };
+            });
+          });
+      });
+      input.addEventListener("awesomplete-selectcomplete", function(evt) {
+        var selected = awesomplete._list.find(x => x.label === input.value);
+        hidden.value = selected ? selected.value : '';
+        updateWinnerOptions();
+      });
+      input.addEventListener("blur", function() {
+        if (!input.value) hidden.value = '';
+        updateWinnerOptions();
+      });
+    }
+    function updateWinnerOptions() {
+      var boxerAId = document.getElementById('result-boxer-a-id').value;
+      var boxerBId = document.getElementById('result-boxer-b-id').value;
+      var boxerAName = document.getElementById('result-boxer-a-input').value;
+      var boxerBName = document.getElementById('result-boxer-b-input').value;
+      var winnerSelect = document.getElementById('result-winner-select');
+      var winnerGroup = document.getElementById('winner-select-group');
+      // Remove all except the first two options (blank and draw)
+      while (winnerSelect.options.length > 2) { winnerSelect.remove(2); }
+      if (boxerAId && boxerBId) {
+        var optA = document.createElement('option');
+        optA.value = boxerAId;
+        optA.text = boxerAName;
+        winnerSelect.appendChild(optA);
+        var optB = document.createElement('option');
+        optB.value = boxerBId;
+        optB.text = boxerBName;
+        winnerSelect.appendChild(optB);
+        winnerGroup.style.display = '';
+      } else {
+        winnerGroup.style.display = 'none';
+        winnerSelect.value = '';
+      }
+    }
+    function toggleResultDrawField() {
+      var winnerSelect = document.getElementById('result-winner-select');
+      var methodField = document.getElementById('result-method-field');
+      var drawField = document.getElementById('result-draw-field');
+      if (winnerSelect.value === 'draw') {
+        methodField.style.display = 'none';
+        drawField.value = true;
+      } else if (winnerSelect.value) {
+        methodField.style.display = 'block';
+        drawField.value = false;
+      } else {
+        methodField.style.display = 'none';
+        drawField.value = false;
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      setupBoxerAutocomplete('result-boxer-a-input', 'result-boxer-a-id', 'result-winner-select');
+      setupBoxerAutocomplete('result-boxer-b-input', 'result-boxer-b-id', 'result-winner-select');
+      document.getElementById('result-winner-select').addEventListener('change', toggleResultDrawField);
+      document.getElementById('cancel-result-modal-btn').onclick = function() {
+        document.getElementById('add-result-modal').style.display = 'none';
+      };
+      document.getElementById('close-result-modal-btn').onclick = function() {
+        document.getElementById('add-result-modal').style.display = 'none';
+      };
+      updateWinnerOptions();
+    });
+  </script>
+</div>

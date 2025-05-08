@@ -74,4 +74,6 @@ Rails.application.routes.draw do
   get '/boxers/autocomplete', to: 'boxers#autocomplete'
 
   resources :fights, only: [:create, :update, :destroy]
+
+  post '/manage_results', to: 'editors#create'
 end

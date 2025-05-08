@@ -1,0 +1,54 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Division</th>
+                <th>Boxer A</th>
+                <th>Boxer B</th>
+                <th>Result</th>
+                <th>Method</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @fights.each do |fight| %>
+                <tr>
+                    <td><%= fight.fight_date.strftime("%d %b %Y") %></td>
+                    <td><%= fight.weight_class.titleize %></td>
+                    <td>
+                        <%= link_to fight.boxer_a.full_name, boxer_profile_path(fight.boxer_a), class: "text-decoration-none" %>
+                        <% if fight.winner_id == fight.boxer_a.id %>
+                            <span class="badge bg-success ms-1">W</span>
+                        <% end %>
+                    </td>
+                    <td>
+                        <%= link_to fight.boxer_b.full_name, boxer_profile_path(fight.boxer_b), class: "text-decoration-none" %>
+                        <% if fight.winner_id == fight.boxer_b.id %>
+                            <span class="badge bg-success ms-1">W</span>
+                        <% end %>
+                    </td>
+                    <td>
+                        <% if fight.draw %>
+                            <span class="badge bg-secondary">Draw</span>
+                        <% elsif fight.winner_id %>
+                            <% if fight.winner_id == fight.boxer_a.id %>
+                                <%= fight.boxer_a.full_name %>
+                            <% elsif fight.winner_id == fight.boxer_b.id %>
+                                <%= fight.boxer_b.full_name %>
+                            <% end %>
+                        <% end %>
+                    </td>
+                    <td><%= fight.method&.titleize %></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edit-fight-<%= fight.id %>">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div> 
