@@ -1,45 +1,40 @@
 <div class="container-fluid py-4">
   <div class="text-center mb-4">
     <h1 class="mb-2">Results</h1>
-    <div class="results-underline"></div>
+    <div class="red-underline"></div>
   </div>
 
   <div class="row justify-content-center">
     <div class="col-lg-10 col-md-12">
       <!-- Filters -->
-      <form id="results-filter-form">
+      <%= form_tag results_path, method: :get, id: "results-filter-form" do %>
         <div class="results-filter">
           <select name="division" id="division-select" class="form-select filter-select">
             <option value="">Division</option>
-            <option value="Heavyweight">Heavyweight</option>
-            <option value="Light Heavyweight">Light Heavyweight</option>
-            <option value="Welterweight">Welterweight</option>
-            <option value="Lightweight">Lightweight</option>
-          </select>
-          <select name="nationality" id="nationality-select" class="form-select filter-select">
-            <option value="">Nationality</option>
-            <option value="England">England</option>
-            <option value="Panama">Panama</option>
-            <option value="Ukraine">Ukraine</option>
-            <option value="Nigeria">Nigeria</option>
-          </select>
-          <select name="region" id="region-select" class="form-select filter-select">
-            <option value="">Region</option>
-            <option value="Ireland">Ireland</option>
-            <option value="USA">USA</option>
-            <option value="Mexico">Mexico</option>
-            <option value="Saudi">Saudi</option>
+            <% Boxer::WEIGHT_CLASSES.each do |division| %>
+              <option value="<%= division %>" <%= 'selected' if params[:division] == division %>><%= division.titleize %></option>
+            <% end %>
           </select>
           <select name="gender" id="gender-select" class="form-select filter-select">
             <option value="">Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value="Male" <%= 'selected' if params[:gender] == 'Male' %>>Male</option>
+            <option value="Female" <%= 'selected' if params[:gender] == 'Female' %>>Female</option>
           </select>
+          <div class="search-bar-wrapper">
+            <%= text_field_tag :search, params[:search], 
+                class: 'form-control',
+                placeholder: 'Enter boxer name...',
+                autocomplete: 'off',
+                id: 'boxer-search',
+                style: 'padding-right: 2.5rem;' %>
+            <button type="submit" class="search-icon-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
-      </form>
+      <% end %>
 
-      <!-- Dummy Results Table -->
+      <!-- Results Table -->
       <div class="card mt-4">
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -50,49 +45,43 @@
                   <th>Boxer 1</th>
                   <th>Boxer 2</th>
                   <th>Division</th>
-                  <th>Region</th>
+                  <th>Location</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>2024-05-01</td>
-                  <td>
-                    John Smith
-                    <span class="result-box win">Win</span>
-                  </td>
-                  <td>
-                    <span class="result-box loss">Loss</span>
-                    Mike O'Neil
-                  </td>
-                  <td>Heavyweight</td>
-                  <td>Ireland</td>
-                </tr>
-                <tr>
-                  <td>2024-04-20</td>
-                  <td>
-                    <span class="result-box loss">Loss</span>
-                    Anna Ivanova
-                  </td>
-                  <td>
-                    Maria Lopez
-                    <span class="result-box win">Win</span>
-                  </td>
-                  <td>Lightweight</td>
-                  <td>USA</td>
-                </tr>
-                <tr>
-                  <td>2024-03-15</td>
-                  <td>
-                    <span class="result-box loss">Loss</span>
-                    James Brown
-                  </td>
-                  <td>
-                    <span class="result-box win">Win</span>
-                    Samuel Okoye
-                  </td>
-                  <td>Welterweight</td>
-                  <td>Mexico</td>
-                </tr>
+                <% if @fights.any? %>
+                  <% @fights.each do |fight| %>
+                    <tr>
+                      <td><%= fight.fight_date&.strftime("%Y-%m-%d") || "TBD" %></td>
+                      <td>
+                        <%= link_to fight.boxer_a.full_name, boxer_profile_path(fight.boxer_a), class: "text-decoration-none" %>
+                        <% if fight.winner_id == fight.boxer_a.id %>
+                          <span class="result-box win">Win</span>
+                        <% elsif fight.draw %>
+                          <span class="result-box draw">Draw</span>
+                        <% else %>
+                          <span class="result-box loss">Loss</span>
+                        <% end %>
+                      </td>
+                      <td>
+                        <%= link_to fight.boxer_b.full_name, boxer_profile_path(fight.boxer_b), class: "text-decoration-none" %>
+                        <% if fight.winner_id == fight.boxer_b.id %>
+                          <span class="result-box win">Win</span>
+                        <% elsif fight.draw %>
+                          <span class="result-box draw">Draw</span>
+                        <% else %>
+                          <span class="result-box loss">Loss</span>
+                        <% end %>
+                      </td>
+                      <td><%= fight.weight_class.titleize %></td>
+                      <td><%= fight.fight_location %></td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="5" class="text-center py-4">No results found</td>
+                  </tr>
+                <% end %>
               </tbody>
             </table>
           </div>
@@ -102,24 +91,101 @@
   </div>
 </div>
 
-<style>
-.result-box {
-  display: inline-block;
-  width: 28px;
-  height: 22px;
-  line-height: 22px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
-  border-radius: 4px;
-  margin: 0 6px 0 6px;
-  vertical-align: middle;
-}
-.result-box.win {
-  background: #19d219;
-}
-.result-box.loss {
-  background: #e53935;
-}
-</style>
+<% content_for :head do %>
+  <style>
+    .red-underline {
+      height: 2px;
+      background-color: #ba0404;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .result-box {
+      display: inline-block;
+      width: 28px;
+      height: 22px;
+      line-height: 22px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      margin: 0 6px 0 6px;
+      vertical-align: middle;
+    }
+    .result-box.win {
+      background: #19d219;
+    }
+    .result-box.loss {
+      background: #e53935;
+    }
+    .result-box.draw {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .search-bar-wrapper {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-icon-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      padding: 0;
+      margin: 0;
+      height: 24px;
+      width: 24px;
+      color: #6c757d;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .search-icon-btn:focus {
+      outline: none;
+    }
+  </style>
+<% end %>
+
+<% content_for :javascript do %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Awesomplete autocomplete for boxer search
+      var input = document.getElementById("boxer-search");
+      if (input) {
+        var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 10 });
+        input.addEventListener("input", function() {
+          var query = input.value;
+          if (query.length > 0) {
+            fetch("/boxers/autocomplete?term=" + encodeURIComponent(query))
+              .then(response => response.json())
+              .then(data => {
+                awesomplete.list = data.map(b => b.name);
+              });
+          }
+        });
+      }
+
+      // Auto-submit on filter change
+      var form = document.getElementById("results-filter-form");
+      var division = document.getElementById("division-select");
+      var gender = document.getElementById("gender-select");
+
+      if (division) {
+        division.addEventListener("change", function() {
+          form.submit();
+        });
+      }
+      if (gender) {
+        gender.addEventListener("change", function() {
+          form.submit();
+        });
+      }
+    });
+  </script>
+<% end %>

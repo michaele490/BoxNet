@@ -144,12 +144,18 @@
           <h2 class="section-title">Next Fights</h2>
           <div class="red-underline mb-3"></div>
           
-          <div class="next-fight-item">
-            <h5>Sample Boxer vs Opponent 1</h5>
-            <div class="fight-details">
-              <span><i class="fas fa-calendar"></i> April 29, 2025</span>
-              <span><i class="fas fa-map-marker-alt ms-3"></i> Sample Venue 1</span>
-            </div>
+          <div class="next-fight-list">
+            <% (@boxer.fights_as_a.where(status: 'scheduled') + @boxer.fights_as_b.where(status: 'scheduled')).sort_by { |f| f.fight_date || f.created_at }.each do |fight| %>
+              <div class="next-fight-item">
+                <h5><%= @boxer.full_name %> vs <%= fight.opponent_for(@boxer).full_name %></h5>
+                <div class="fight-details">
+                  <span><i class="fas fa-calendar"></i> <%= (fight.fight_date || fight.created_at).strftime("%B %d, %Y") %></span>
+                  <% if fight.fight_location.present? %>
+                    <span><i class="fas fa-map-marker-alt ms-3"></i> <%= fight.fight_location %></span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
