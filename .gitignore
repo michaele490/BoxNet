@@ -36,3 +36,4 @@
 
 # Environment variables
 /.env
+/config/credentials/production.key
