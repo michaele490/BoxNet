@@ -28,4 +28,8 @@ class MainController < ApplicationController
 
     def fixtures
     end
+
+    def test
+        @fights = Fight.includes(:boxer_a, :boxer_b).where(status: 'occurred')
+    end
 end

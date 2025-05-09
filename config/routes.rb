@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/signup", to: "main#sign_up"
   get "/results", to: "main#results"
   get "/fixtures", to: "main#fixtures"
+  get "/test", to: "main#test"
   get "/coach_profile", to: "coaches#profile", as: :coach_profile
   get "/assign_boxers", to: "coaches#assign_boxers", as: :assign_boxers
 

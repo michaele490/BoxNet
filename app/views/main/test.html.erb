@@ -1,0 +1,254 @@
+<!-- Filters -->
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+        <%= form_tag manage_results_path, method: :get, id: "filter-form", remote: true do %>
+            <div class="editor-filter-card" style="flex-wrap: wrap;">
+                <!-- Date Range Filter -->
+                <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 140px;">
+                    <label class="form-label mb-1">Date</label>
+                    <div class="d-flex gap-1">
+                        <input type="date" name="date_from" value="<%= params[:date_from] %>" class="form-control form-control-sm" style="width: 130px;" placeholder="From">
+                        <input type="date" name="date_to" value="<%= params[:date_to] %>" class="form-control form-control-sm" style="width: 130px;" placeholder="To">
+                    </div>
+                </div>
+                <!-- Division Filter -->
+                <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 120px;">
+                    <label class="form-label mb-1">Division</label>
+                    <select name="division" id="division-select" class="slim-select" style="min-width: 110px;">
+                        <option value="">All</option>
+                        <% Boxer::WEIGHT_CLASSES.each do |division| %>
+                            <option value="<%= division %>" <%= 'selected' if params[:division] == division %>><%= division.titleize %></option>
+                        <% end %>
+                    </select>
+                </div>
+                <!-- Gender Filter -->
+                <div class="d-flex flex-column align-items-start justify-content-center me-2" style="min-width: 100px;">
+                    <label class="form-label mb-1">Gender</label>
+                    <select name="gender" id="gender-select" class="slim-select" style="min-width: 90px;">
+                        <option value="">All</option>
+                        <option value="Male" <%= 'selected' if params[:gender] == 'Male' %>>Male</option>
+                        <option value="Female" <%= 'selected' if params[:gender] == 'Female' %>>Female</option>
+                    </select>
+                </div>
+                <!-- Boxer Name Search -->
+                <div class="d-flex flex-column align-items-start justify-content-center" style="min-width: 240px; width: 100%; max-width: 320px; flex: 1;">
+                    <label class="form-label mb-1">&nbsp;</label>
+                    <div class="search-bar-wrapper" style="width: 100%; position: relative; height: 38px; display: flex; align-items: center;">
+                        <input type="text" name="search" value="<%= params[:search] %>" class="form-control form-control-sm" placeholder="Enter boxer name" style="min-width: 180px; max-width: 320px; height: 38px; width: 100%;">
+                        <button type="submit" class="search-icon-btn" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: none; background: none; padding: 0; margin: 0; height: 24px; width: 24px; color: #6c757d; cursor: pointer; z-index: 2;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<!-- Results Table -->
+<div class="row justify-content-center mb-4">
+    <div class="col-md-10" id="results-table-container">
+        <% if @fights.any? %>
+            <%= render 'editors/editor_results' %>
+        <% else %>
+            <p class="text-center"><i>No fight results</i></p>
+        <% end %>
+    </div>
+</div>
+
+<!-- Add new result button -->
+<div class="row justify-content-center mb-4">
+    <div class="col-md-8 d-flex justify-content-center">
+        <%= link_to 'Add New Result', '#', class: 'btn btn-primary', id: 'add-result-btn' %>
+    </div>
+</div>
+
+<%= render 'editors/add_result' %>
+
+<%# Render edit modals for each fight result %>
+<% @fights.each do |fight| %>
+    <%= render partial: 'editors/edit_fight', locals: { fight: fight } %>
+<% end %>
+
+<% content_for :head do %>
+    <style>
+        .red-underline {
+            height: 2px;
+            background-color: #ba0404;
+            width: 95%;
+            margin: 0 auto;
+        }
+        .editor-filter-card {
+            background: #ba0404;
+            border-radius: 10px;
+            padding: 18px 30px 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .editor-filter-card label.form-label {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .editor-filter-card .form-control,
+        .editor-filter-card .form-select {
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+            min-width: 120px;
+            box-shadow: none;
+        }
+        .editor-filter-card .form-control:focus,
+        .editor-filter-card .form-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #fff2;
+            border: none;
+        }
+        .editor-filter-card .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            min-width: 70px;
+        }
+        @media (max-width: 1200px) {
+            .editor-filter-card {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .search-bar-wrapper, .editor-filter-card input[name='search'] {
+                max-width: 100% !important;
+            }
+        }
+        @media (max-width: 900px) {
+            .editor-filter-card {
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px 10px;
+            }
+        }
+        .search-bar-wrapper {
+            width: 100%;
+            position: relative;
+            height: 38px;
+            display: flex;
+            align-items: center;
+        }
+        .search-icon-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            height: 24px;
+            width: 24px;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .search-icon-btn:focus {
+            outline: none;
+        }
+        .form-control-sm {
+            height: 38px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.css" rel="stylesheet">
+<% end %>
+
+<% content_for :javascript do %>
+    <script src="https://cdn.jsdelivr.net/npm/slim-select@2.8.0/dist/slimselect.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        new SlimSelect({ select: '#division-select' });
+        new SlimSelect({ select: '#gender-select' });
+
+        // Awesomplete autocomplete for boxer search
+        var input = document.querySelector('input[name="search"]');
+        if (input) {
+          var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 10 });
+          input.setAttribute('autocomplete', 'off');
+          input.addEventListener("input", function() {
+            var query = input.value;
+            if (query.length > 0) {
+              fetch("/boxers/autocomplete?term=" + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                  awesomplete.list = data.map(b => b.name);
+                });
+            }
+          });
+        }
+
+        // AJAX filter logic
+        var form = document.getElementById("filter-form");
+        var division = document.getElementById("division-select");
+        var gender = document.getElementById("gender-select");
+        var dateFrom = document.querySelector('input[name="date_from"]');
+        var dateTo = document.querySelector('input[name="date_to"]');
+        var resultsTableContainer = document.getElementById("results-table-container");
+
+        function ajaxFilterSubmit() {
+          var formData = new FormData(form);
+          var params = new URLSearchParams(formData).toString();
+          fetch(form.action + '?' + params, {
+            headers: { 'Accept': 'text/vnd.turbo-stream.html, text/html, application/xhtml+xml, application/xml;q=0.9,*/*;q=0.8' }
+          })
+          .then(response => response.text())
+          .then(html => {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            var newTable = tempDiv.querySelector('#results-table-container');
+            if (newTable && resultsTableContainer) {
+              resultsTableContainer.innerHTML = newTable.innerHTML;
+            }
+          });
+        }
+
+        if (division) {
+          division.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        if (gender) {
+          gender.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        if (dateFrom) {
+          dateFrom.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        if (dateTo) {
+          dateTo.addEventListener("change", function() {
+            ajaxFilterSubmit();
+          });
+        }
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          ajaxFilterSubmit();
+        });
+
+        // Modal logic for Add Result
+        var addResultBtn = document.getElementById('add-result-btn');
+        if (addResultBtn) {
+          addResultBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('add-result-modal').style.display = 'flex';
+          });
+        }
+      });
+    </script>
+<% end %>
