@@ -13,6 +13,7 @@
           <div class="red-underline mb-3"></div>
           
           <div class="info-items-container">
+          <!-- Displays N/A for any field which is nil -->
             <div class="info-item">
               <strong>Nickname:</strong> <%= @boxer.nickname || "N/A" %>
             </div>
@@ -53,6 +54,7 @@
 
       <!-- Attributes Section -->
       <div class="card">
+        <!-- Displays N/A for any field which is nil -->  
         <div class="card-body">
           <h2 class="section-title">Attributes</h2>
           <div class="red-underline mb-3"></div>

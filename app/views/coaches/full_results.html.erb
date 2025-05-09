@@ -1,0 +1,94 @@
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h1 class="mb-2">All Results for <%= @coach.full_name %></h1>
+    <div class="red-underline"></div>
+  </div>
+
+  <div class="card mb-4" style="background-color: #ba0404; color: #fff; border: none; max-width: 98%; margin: 0 auto; min-height: unset;">
+    <div class="card-body py-1" style="padding-bottom: 0.25rem !important; padding-top: 0.25rem !important;">
+      <%= form_with url: full_results_coach_path, method: :get, local: false, class: "row g-2 align-items-end mb-0 flex-nowrap", id: "results-filter-form" do |f| %>
+        <div class="col-md-3 mb-0 pb-0">
+          <%= f.label :date_from, "From Date", class: "form-label text-white mb-1" %>
+          <%= f.date_field :date_from, value: params[:date_from], class: "form-control form-control-sm", id: "date-from" %>
+        </div>
+        <div class="col-md-3 mb-0 pb-0">
+          <%= f.label :date_to, "To Date", class: "form-label text-white mb-1" %>
+          <%= f.date_field :date_to, value: params[:date_to], class: "form-control form-control-sm", id: "date-to" %>
+        </div>
+        <div class="col-md-3 mb-0 pb-0">
+          <%= f.label :division, "Division", class: "form-label text-white mb-1" %>
+          <% weight_classes = [''] + Boxer::WEIGHT_CLASSES %>
+          <%= f.select :division, options_for_select(weight_classes, params[:division]), {}, class: "form-select form-select-sm", id: "division-select" %>
+        </div>
+        <div class="col-md-2 mb-0 pb-0">
+          <%= f.label :gender, "Gender", class: "form-label text-white mb-1" %>
+          <%= f.select :gender, options_for_select(['', 'Male', 'Female'], params[:gender]), {}, class: "form-select form-select-sm", id: "gender-select" %>
+        </div>
+        <div class="col-md-1 d-flex align-items-end mb-0 pb-0">
+          <%= f.submit "Filter", class: "btn btn-light btn-sm w-100 text-danger fw-bold" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-0">
+      <div class="results-list" id="results-list" style="height: 500px; overflow-y: auto;">
+        <%= render partial: 'coaches/results_list', locals: { results: @results, coach: @coach } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .red-underline {
+      height: 2px;
+      background-color: #ba0404;
+      width: 95%;
+      margin: 0 auto;
+    }
+    .card.mb-4 {
+      min-height: unset !important;
+      max-height: 90px !important;
+      margin-bottom: 1.5rem !important;
+    }
+    .card-body {
+      padding-top: 0.25rem !important;
+      padding-bottom: 0.25rem !important;
+    }
+    .results-list {
+      scrollbar-width: thin;
+      scrollbar-color: #ba0404 #f8f9fa;
+    }
+    .results-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .results-list::-webkit-scrollbar-track {
+      background: #f8f9fa;
+    }
+    .results-list::-webkit-scrollbar-thumb {
+      background-color: #ba0404;
+      border-radius: 3px;
+    }
+    .result-item:hover {
+      background-color: #f8f9fa;
+    }
+    .result-item:last-child {
+      border-bottom: none !important;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var form = document.getElementById("results-filter-form");
+      var division = document.getElementById("division-select");
+      var gender = document.getElementById("gender-select");
+      var dateFrom = document.getElementById("date-from");
+      var dateTo = document.getElementById("date-to");
+      if (division) division.addEventListener("change", function() { form.submit(); });
+      if (gender) gender.addEventListener("change", function() { form.submit(); });
+      if (dateFrom) dateFrom.addEventListener("change", function() { form.submit(); });
+      if (dateTo) dateTo.addEventListener("change", function() { form.submit(); });
+    });
+  </script>
+<% end %> 

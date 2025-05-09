@@ -1,28 +1,20 @@
 <div class="container-fluid py-4">
   <div class="text-center mb-4">
-    <h1 class="mb-2">Fixtures</h1>
+    <h1 class="mb-2">Boxers</h1>
     <div class="red-underline"></div>
   </div>
 
   <div class="row justify-content-center mb-5">
     <div class="col-md-11 col-lg-10">
-      <%= form_tag fixtures_path, method: :get, id: "fixtures-filter-form" do %>
+      <%= form_tag boxers_path, method: :get, id: "boxers-filter-form" do %>
         <div class="results-filter-bar">
-          <!-- Date -->
+          <!-- Nationality -->
           <div class="filter-group">
-            <label class="form-label mb-1">Date</label>
-            <div class="d-flex gap-1">
-              <input type="date" name="date_from" value="<%= params[:date_from] %>" class="form-control form-control-sm" placeholder="From">
-              <input type="date" name="date_to" value="<%= params[:date_to] %>" class="form-control form-control-sm" placeholder="To">
-            </div>
-          </div>
-          <!-- Division -->
-          <div class="filter-group">
-            <label class="form-label mb-1">Division</label>
-            <select name="division" id="division-select" class="form-control form-control-sm slim-select scrollable-dropdown">
+            <label class="form-label mb-1">Nationality</label>
+            <select name="nationality" id="nationality-select" class="form-control form-control-sm slim-select scrollable-dropdown">
               <option value="">All</option>
-              <% Boxer::WEIGHT_CLASSES.each do |division| %>
-                <option value="<%= division %>" <%= 'selected' if params[:division] == division %>><%= division.titleize %></option>
+              <% ISO3166::Country.translations.values.sort.each do |nat| %>
+                <option value="<%= nat %>" <%= 'selected' if params[:nationality] == nat %>><%= nat %></option>
               <% end %>
             </select>
           </div>
@@ -33,6 +25,16 @@
               <option value="">All</option>
               <option value="Male" <%= 'selected' if params[:gender] == 'Male' %>>Male</option>
               <option value="Female" <%= 'selected' if params[:gender] == 'Female' %>>Female</option>
+            </select>
+          </div>
+          <!-- Division -->
+          <div class="filter-group">
+            <label class="form-label mb-1">Division</label>
+            <select name="division" id="division-select" class="form-control form-control-sm slim-select scrollable-dropdown">
+              <option value="">All</option>
+              <% Boxer::WEIGHT_CLASSES.each do |division| %>
+                <option value="<%= division %>" <%= 'selected' if params[:division] == division %>><%= division.titleize %></option>
+              <% end %>
             </select>
           </div>
         </div>
@@ -46,27 +48,38 @@
         <table class="table mb-0">
           <thead class="table-light">
             <tr>
-              <th>Date</th>
-              <th>Boxer 1</th>
-              <th>Boxer 2</th>
+              <th>Name</th>
+              <th>Record</th>
               <th>Division</th>
-              <th>Location</th>
+              <th>Nationality</th>
             </tr>
           </thead>
           <tbody>
-            <% if @fights.any? %>
-              <% @fights.each do |fight| %>
+            <% if @boxers.any? %>
+              <% @boxers.each do |boxer| %>
                 <tr>
-                  <td><%= fight.fight_date&.strftime("%Y-%m-%d") || "TBD" %></td>
-                  <td><%= link_to fight.boxer_a.full_name, boxer_profile_path(fight.boxer_a), class: "text-decoration-none" %></td>
-                  <td><%= link_to fight.boxer_b.full_name, boxer_profile_path(fight.boxer_b), class: "text-decoration-none" %></td>
-                  <td><%= fight.weight_class.titleize %></td>
-                  <td><%= fight.fight_location %></td>
+                  <td>
+                    <%= link_to boxer.full_name.html_safe, boxer_profile_path(boxer), class: "boxer-link" %>
+                  </td>
+                  <td>
+                    <% record = boxer.boxer_record %>
+                    <span class="record-win"><%= record.wins %></span>
+                    <span class="record-loss"> <%= record.losses %></span>
+                    <span class="record-draw"> <%= record.draws %></span>
+                  </td>
+                  <td><%= boxer.weight_class.present? ? boxer.weight_class.titleize : "N/A" %></td>
+                  <td>
+                    <% if boxer.nationality.present? %>
+                      <%= boxer.nationality_with_flag %>
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
                 </tr>
               <% end %>
             <% else %>
               <tr>
-                <td colspan="5" class="text-center py-4">No fixtures found</td>
+                <td colspan="4" class="text-center py-4">No boxers found</td>
               </tr>
             <% end %>
           </tbody>
@@ -109,6 +122,19 @@
     .scrollable-dropdown .ss-content { max-height: 220px !important; overflow-y: auto !important; }
     .form-control-sm { height: 38px; }
     .results-table-scroll { max-height: 500px; overflow-y: auto; }
+    .boxer-link {
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .boxer-link:hover {
+      color: #ba0404;
+      text-decoration: underline;
+    }
+    .record-win { color: #018a44; font-weight: 600; }
+    .record-loss { color: #e53935; font-weight: 600; }
+    .record-draw { color: #ff9800; font-weight: 600; }
     @media (max-width: 900px) {
       .results-filter-bar {
         flex-direction: column;
@@ -127,15 +153,16 @@
     document.addEventListener("DOMContentLoaded", function() {
       new SlimSelect({ select: '#division-select' });
       new SlimSelect({ select: '#gender-select' });
-      var form = document.getElementById("fixtures-filter-form");
+      new SlimSelect({ select: '#nationality-select' });
+      
+      // Auto-submit on filter change
+      var form = document.getElementById("boxers-filter-form");
       var division = document.getElementById("division-select");
       var gender = document.getElementById("gender-select");
-      var dateFrom = document.querySelector('input[name="date_from"]');
-      var dateTo = document.querySelector('input[name="date_to"]');
+      var nationality = document.getElementById("nationality-select");
       if (division) division.addEventListener("change", function() { form.submit(); });
       if (gender) gender.addEventListener("change", function() { form.submit(); });
-      if (dateFrom) dateFrom.addEventListener("change", function() { form.submit(); });
-      if (dateTo) dateTo.addEventListener("change", function() { form.submit(); });
+      if (nationality) nationality.addEventListener("change", function() { form.submit(); });
     });
   </script>
 <% end %>

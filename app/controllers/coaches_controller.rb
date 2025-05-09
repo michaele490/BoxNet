@@ -4,17 +4,15 @@ class CoachesController < ApplicationController
   
   def profile
     @coach = current_coach
-=begin
-    @upcoming_fights = Fight.upcoming.joins(:boxer)
-                          .where(boxers: { coach_id: current_coach.id })
-                          .order(date: :asc)
-                          .limit(10)
-    
-    @recent_results = Result.joins(:boxer)
-                           .where(boxers: { coach_id: current_coach.id })
-                           .order(date: :desc)
+    boxer_ids = @coach.boxers.pluck(:id)
+    @upcoming_fights = Fight.where(status: 'scheduled')
+                            .where("boxer_a_id IN (?) OR boxer_b_id IN (?)", boxer_ids, boxer_ids)
+                            .order(fight_date: :asc)
+                            .limit(10)
+    @recent_results = Fight.where(status: 'occurred')
+                           .where("boxer_a_id IN (?) OR boxer_b_id IN (?)", boxer_ids, boxer_ids)
+                           .order(fight_date: :desc)
                            .limit(10)
-=end
   end
 
   def assign_boxers
@@ -87,6 +85,33 @@ class CoachesController < ApplicationController
       redirect_to assign_boxers_path, notice: 'Request canceled successfully!'
     else
       redirect_to assign_boxers_path, alert: 'Failed to cancel request.'
+    end
+  end
+
+  def full_results
+    @coach = current_coach
+    boxer_ids = @coach.boxers.pluck(:id)
+    @results = Fight.where(status: 'occurred')
+                    .where("boxer_a_id IN (?) OR boxer_b_id IN (?)", boxer_ids, boxer_ids)
+    # Filters
+    if params[:date_from].present?
+      @results = @results.where('fight_date >= ?', params[:date_from])
+    end
+    if params[:date_to].present?
+      @results = @results.where('fight_date <= ?', params[:date_to])
+    end
+    if params[:division].present? && params[:division] != ""
+      @results = @results.where(weight_class: params[:division])
+    end
+    if params[:gender].present? && params[:gender] != ""
+      @results = @results.joins("LEFT JOIN boxers AS a ON fights.boxer_a_id = a.id LEFT JOIN boxers AS b ON fights.boxer_b_id = b.id")
+                         .where("a.gender = :gender OR b.gender = :gender", gender: params[:gender])
+    end
+    @results = @results.order(fight_date: :desc)
+
+    respond_to do |format|
+      format.html
+      format.js { render partial: 'coaches/results_list', locals: { results: @results, coach: @coach } }
     end
   end
 

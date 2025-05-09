@@ -1,5 +1,7 @@
 class Fight < ApplicationRecord
-
+    # A fight record where status == 'occurred' is a result
+    # A fight record where status == 'scheduled' is a fixture
+    
     belongs_to :editor
     belongs_to :boxer_a, class_name: "Boxer"
     belongs_to :boxer_b, class_name: "Boxer"

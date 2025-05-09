@@ -1,43 +1,31 @@
 <div class="container-fluid">
     <div class="row first">
-        <div class="col-md-3">
-            <div class="signup">
-                <h3 class="signup-header">Spectator</h3>
-                <ul class="account_description">
-                    <li>Make predictions for fights</li>
-                    <li>Create posts in forum</li>
-                </ul>
-                <%= button_to "Sign Up", new_spectator_registration_path, method: :get, class: "signup_btn" %>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="signup">
                 <h3 class="signup-header">Boxer</h3>
                 <ul class="account_description">
                     <li>Record and track fight history and stats</li>
                     <li>Connect with your coaches</li>
-                    <li>Create posts in forum</li>
                 </ul>
                 <%= button_to "Sign Up", new_boxer_registration_path, method: :get, class: "signup_btn" %>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="signup">
                 <h3 class="signup-header">Coach</h3>
                 <ul class="account_description">
                     <li>Connect with your boxers</li>
                     <li>Manage your boxers&apos; ratings</li>
-                    <li>Create posts in forum</li>
                 </ul>
                 <%= button_to "Sign Up", new_coach_registration_path, method: :get, class: "signup_btn" %>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="signup">
                 <h3 class="signup-header">Editor</h3>
                 <ul class="account_description">
-                    <li>Add and edit upcoming fights and past results</li>
-                    <li>Create news articles</li>
+                    <li>Add and edit upcoming fights</li>
+                    <li>Add fight results</li>
                 </ul>
                 <%= button_to "Sign Up", new_editor_registration_path, method: :get, class: "signup_btn" %>
             </div>

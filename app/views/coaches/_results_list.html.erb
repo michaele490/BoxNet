@@ -1,0 +1,27 @@
+<% if results.any? %>
+  <% results.each do |fight| %>
+    <div class="result-item p-3 border-bottom">
+      <h5 class="mb-2">
+        <%= fight.boxer_a.full_name %> vs <%= fight.boxer_b.full_name %>
+      </h5>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted">
+          <small><%= fight.fight_date.strftime("%B %d, %Y") if fight.fight_date %></small>
+          <br>
+          <small><i class="fas fa-map-marker-alt"></i> <%= fight.fight_location %></small>
+        </div>
+        <% if fight.draw? %>
+          <span class="badge bg-secondary">Draw</span>
+        <% else %>
+          <% winner = [fight.boxer_a, fight.boxer_b].find { |b| b.id == fight.winner_id } %>
+          <% is_coach_win = winner && winner.coach_id == coach.id %>
+          <span class="badge <%= is_coach_win ? 'bg-success' : 'bg-danger' %>">
+            <%= is_coach_win ? 'Win' : 'Loss' %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="p-3">No results found for the selected filters.</div>
+<% end %> 

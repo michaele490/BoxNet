@@ -9,6 +9,7 @@
     background-color: white;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .signup-header{
@@ -17,6 +18,8 @@
     margin-top: 8px;
     padding-bottom: 7px;
     border-bottom: 1.5px solid #726f6f;
+    text-align: center;
+    width: 100%;
 }
 
 .account_description li{
@@ -35,6 +38,7 @@
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 24px;
+    align-self: center;
 }
 
 /* Make the list grow to fill space */

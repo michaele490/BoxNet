@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/signup", to: "main#sign_up"
   get "/results", to: "main#results"
   get "/fixtures", to: "main#fixtures"
+  get "/boxers", to: "main#boxers"
   get "/test", to: "main#test"
   get "/coach_profile", to: "coaches#profile", as: :coach_profile
   get "/assign_boxers", to: "coaches#assign_boxers", as: :assign_boxers
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
   patch "/update_attributes/:boxer_id", to: "coaches#update_attributes", as: :update_attributes
   post "/send_add_request/:boxer_id", to: "coaches#send_add_request", as: :send_add_request_coach
   delete "/cancel_request/:boxer_id", to: "coaches#cancel_request", as: :cancel_request_coach
+  get "/full_results", to: "coaches#full_results", as: :full_results_coach
 
   # Boxer Routes
   get "/boxer_profile/:id", to: "boxers#profile", as: :boxer_profile

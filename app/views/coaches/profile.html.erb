@@ -50,19 +50,24 @@
         <h2 class="h4 mb-0">Upcoming Fights</h2>
       </div>
       
-      <%# Placeholder for upcoming fights while it is empty %>
       <div class="card">
         <div class="card-body p-0">
           <div class="upcoming-fights-list" style="max-height: 400px; overflow-y: auto;">
-            <% 5.times do |i| %>
-              <div class="fight-item p-3 border-bottom">
-                <h5 class="mb-2">Sample Boxer vs Opponent <%= i + 1 %></h5>
-                <div class="text-muted">
-                  <small><i class="fas fa-calendar"></i> <%= (Date.today + i.weeks).strftime("%B %d, %Y") %></small>
-                  <br>
-                  <small><i class="fas fa-map-marker-alt"></i> Sample Venue <%= i + 1 %></small>
+            <% if @upcoming_fights.any? %>
+              <% @upcoming_fights.each do |fight| %>
+                <div class="fight-item p-3 border-bottom">
+                  <h5 class="mb-2">
+                    <%= fight.boxer_a.full_name %> vs <%= fight.boxer_b.full_name %>
+                  </h5>
+                  <div class="text-muted">
+                    <small><i class="fas fa-calendar"></i> <%= fight.fight_date.strftime("%B %d, %Y") if fight.fight_date %></small>
+                    <br>
+                    <small><i class="fas fa-map-marker-alt"></i> <%= fight.fight_location %></small>
+                  </div>
                 </div>
-              </div>
+              <% end %>
+            <% else %>
+              <div class="p-3">No upcoming fights.</div>
             <% end %>
           </div>
         </div>
@@ -73,25 +78,36 @@
     <div class="col-md-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h4 mb-0">Recent Results</h2>
-        <%= link_to "View All Results", "#", class: "btn btn-link text-danger p-0" %>
+        <%= link_to "View All Results", full_results_coach_path, class: "btn btn-link text-danger p-0" %>
       </div>
       
-      <%# Placeholder for results while it is empty %>
       <div class="card">
         <div class="card-body p-0">
           <div class="results-list" style="max-height: 400px; overflow-y: auto;">
-            <% 5.times do |i| %>
-              <div class="result-item p-3 border-bottom">
-                <h5 class="mb-2">Sample Boxer vs Past Opponent <%= i + 1 %></h5>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="text-muted">
-                    <small><%= (Date.today - i.weeks).strftime("%B %d, %Y") %></small>
+            <% if @recent_results.any? %>
+              <% @recent_results.each do |fight| %>
+                <div class="result-item p-3 border-bottom">
+                  <h5 class="mb-2">
+                    <%= fight.boxer_a.full_name %> vs <%= fight.boxer_b.full_name %>
+                  </h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <small><%= fight.fight_date.strftime("%B %d, %Y") if fight.fight_date %></small>
+                    </div>
+                    <% if fight.draw? %>
+                      <span class="badge bg-secondary">Draw</span>
+                    <% else %>
+                      <% winner = [fight.boxer_a, fight.boxer_b].find { |b| b.id == fight.winner_id } %>
+                      <% is_coach_win = winner && winner.coach_id == @coach.id %>
+                      <span class="badge <%= is_coach_win ? 'bg-success' : 'bg-danger' %>">
+                        <%= is_coach_win ? 'Win' : 'Loss' %>
+                      </span>
+                    <% end %>
                   </div>
-                  <span class="badge <%= i.even? ? 'bg-success' : 'bg-danger' %>">
-                    <%= i.even? ? 'Win' : 'Loss' %>
-                  </span>
                 </div>
-              </div>
+              <% end %>
+            <% else %>
+              <div class="p-3">No recent results.</div>
             <% end %>
           </div>
         </div>
