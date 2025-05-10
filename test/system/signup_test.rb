@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-class UserSignUpsTest < ApplicationSystemTestCase
+class SignUpTest < ApplicationSystemTestCase
   test "can sign up as a boxer" do
 
     visit root_path
@@ -62,6 +62,28 @@ class UserSignUpsTest < ApplicationSystemTestCase
     sleep 10
 
     assert_text "Jane Doe"
+
+    assert_current_path root_path
+  end
+
+  test "can sign up as editor" do
+    visit root_path
+    click_on "Sign Up"
+    within('.signup', text: "Editor") do
+        click_on "Sign Up"
+    end
+    sleep 10
+    assert_current_path new_editor_registration_path
+    fill_in "First name", with: "John"
+    fill_in "Last name", with: "Bloggs"
+    fill_in "Username", with: "johnbloggs"
+    fill_in "Email", with: "editor@example.com"
+    fill_in "Password", with: "password123"
+    fill_in "Password confirmation", with: "password123"
+    click_on "Sign up"
+    sleep 10
+
+    assert_text "John Bloggs"
 
     assert_current_path root_path
   end
