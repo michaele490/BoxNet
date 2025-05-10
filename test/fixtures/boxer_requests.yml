@@ -1,11 +1,1 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  coach: one
-  boxer: one
-  status: 1
-
-two:
-  coach: two
-  boxer: two
-  status: 1

@@ -1,162 +1,360 @@
-<div class="container-fluid">
-    <div class="row first">
-        <div class="col-md-4">
-            <h3 class="section-title">Upcoming Fights</h3>
-            <div class="first-row upcoming-fights">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Fighter 1</th>
-                            <th>vs</th>
-                            <th>Fighter 2</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>John "The Hammer" Smith</td>
-                            <td>vs</td>
-                            <td>Mike "Iron Fist" Johnson</td>
-                            <td>2024-04-15</td>
-                        </tr>
-                        <tr>
-                            <td>Sarah "The Storm" Williams</td>
-                            <td>vs</td>
-                            <td>Emma "The Viper" Davis</td>
-                            <td>2024-04-20</td>
-                        </tr>
-                        <tr>
-                            <td>Alex "The Beast" Rodriguez</td>
-                            <td>vs</td>
-                            <td>Chris "The Machine" Taylor</td>
-                            <td>2024-04-25</td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="container-fluid px-4 py-5">
+    <!-- Hero Section -->
+    <div class="hero-section text-center mb-5">
+        <h1 class="display-4 fw-bold">BoxNet</h1>
+        <p class="lead">Your Ultimate Boxing Community</p>
+    </div>
+
+    <!-- Featured Boxers Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="section-title">Featured Boxers</h2>
+        </div>
+        <% if @featured_boxers.any? %>
+            <% @featured_boxers.each do |boxer| %>
+                <div class="col-md-4 mb-4">
+                    <div class="boxer-card">
+                        <div class="boxer-image d-flex align-items-center justify-content-center" style="background: #f8f9fa; height: 250px;">
+                            <span style="font-size: 3rem; color: #e74c3c; font-weight: bold;">
+                                <% if boxer.first_name.present? && boxer.last_name.present? %>
+                                    <%= boxer.first_name.first.upcase + boxer.last_name.first.upcase %>
+                                <% else %>
+                                    <i class="fas fa-user"></i>
+                                <% end %>
+                            </span>
+                        </div>
+                        <div class="boxer-info">
+                            <h3><%= boxer.full_name %><% if boxer.nickname.present? %> "<%= boxer.nickname %>"<% end %></h3>
+                            <div class="stats">
+                                <% record = boxer.boxer_record %>
+                                <span class="stat">Wins: <%= record&.wins || 0 %></span>
+                                <span class="stat">Losses: <%= record&.losses || 0 %></span>
+                                <span class="stat">KOs: <%= record&.knockout_wins || 0 %></span>
+                            </div>
+                            <p class="weight-class"><%= boxer.weight_class&.titleize || 'N/A' %></p>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        <% else %>
+            <div class="col-12 text-center py-4">
+                <em>No featured boxers yet.</em>
+            </div>
+        <% end %>
+    </div>
+
+    <!-- Recent Fights Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="section-title">Recent Fights</h2>
+        </div>
+        <div class="col-12">
+            <div class="fights-timeline">
+                <% if @recent_fights.any? %>
+                    <% @recent_fights.each do |fight| %>
+                        <div class="fight-card">
+                            <div class="fight-date"><%= fight.fight_date&.strftime('%B %d, %Y') || 'TBD' %></div>
+                            <div class="fight-details">
+                                <div class="fighter <%= 'fighter-winner' if fight.winner_id == fight.boxer_a.id %>">
+                                    <%= fight.boxer_a.full_name %>
+                                </div>
+                                <div class="vs">vs</div>
+                                <div class="fighter <%= 'fighter-winner' if fight.winner_id == fight.boxer_b.id %>">
+                                    <%= fight.boxer_b.full_name %>
+                                </div>
+                                <div class="result">
+                                    <% if fight.draw %>
+                                        Draw
+                                    <% elsif fight.winner_id == fight.boxer_a.id %>
+                                        Win (<%= fight.method&.titleize || 'N/A' %>)
+                                    <% elsif fight.winner_id == fight.boxer_b.id %>
+                                        Win (<%= fight.method&.titleize || 'N/A' %>)
+                                    <% else %>
+                                        <%= fight.method&.titleize || 'N/A' %>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <div class="text-center py-4"><em>No recent fights yet.</em></div>
+                <% end %>
             </div>
         </div>
-        <div class="col-md-4">
-            <h3 class="section-title">Recent Results</h3>
-            <div class="first-row results">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Fighter 1</th>
-                            <th>vs</th>
-                            <th>Fighter 2</th>
-                            <th>Winner</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>James "The Dragon" Lee</td>
-                            <td>vs</td>
-                            <td>Tom "The Tank" Wilson</td>
-                            <td>James Lee</td>
-                            <td>KO (Round 2)</td>
-                        </tr>
-                        <tr>
-                            <td>Maria "The Queen" Garcia</td>
-                            <td>vs</td>
-                            <td>Lisa "The Panther" Brown</td>
-                            <td>Maria Garcia</td>
-                            <td>Decision (Unanimous)</td>
-                        </tr>
-                        <tr>
-                            <td>David "The Destroyer" Chen</td>
-                            <td>vs</td>
-                            <td>Robert "The Rock" Miller</td>
-                            <td>David Chen</td>
-                            <td>TKO (Round 3)</td>
-                        </tr>
-                    </tbody>
-                </table>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="stats-card">
+                <h3>Top Knockout Artists</h3>
+                <div class="stats-list">
+                    <% if @top_ko_boxers.any? %>
+                        <% max_kos = @top_ko_boxers.first.boxer_record&.knockout_wins.to_f %>
+                        <% @top_ko_boxers.each do |boxer| %>
+                            <% record = boxer.boxer_record %>
+                            <div class="stat-item">
+                                <span class="name"><%= boxer.full_name %></span>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: <%= max_kos > 0 ? ((record&.knockout_wins.to_f / max_kos) * 100).round : 0 %>%">
+                                        <%= record&.knockout_wins || 0 %> KOs
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="text-center py-4"><em>No knockout stats yet.</em></div>
+                    <% end %>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <h3 class="section-title">Prediction Leaderboard</h3>
-            <div class="first-row pred_leaderboards">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Username</th>
-                            <th>Points</th>
-                            <th>Win Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>FightMaster99</td>
-                            <td>1250</td>
-                            <td>85%</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>BoxingPro</td>
-                            <td>1180</td>
-                            <td>82%</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>ChampionPredictor</td>
-                            <td>1120</td>
-                            <td>80%</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="col-md-6 mb-4">
+            <div class="stats-card">
+                <h3>Upcoming Events</h3>
+                <div class="events-list">
+                    <% if @upcoming_fights.any? %>
+                        <% @upcoming_fights.each do |fight| %>
+                            <div class="event-item">
+                                <div class="event-date"><%= fight.fight_date&.strftime('%B %d, %Y') || 'TBD' %></div>
+                                <div class="event-title"><%= fight.weight_class&.titleize || 'N/A' %></div>
+                                <div class="event-fighters"><%= fight.boxer_a.full_name %> vs. <%= fight.boxer_b.full_name %></div>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="text-center py-4"><em>No upcoming events yet.</em></div>
+                    <% end %>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* General Styles */
     .section-title {
-        color: #333;
-        margin-bottom: 20px;
-        font-weight: bold;
-        margin-top: 32px;
-    }
-    
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    .table th {
-        background-color: #f8f9fa;
-        padding: 12px;
-        text-align: left;
-        border-bottom: 2px solid #dee2e6;
-    }
-    
-    .table td {
-        padding: 12px;
-        border-bottom: 1px solid #dee2e6;
-    }
-    
-    .table tr:hover {
-        background-color: #f5f5f5;
-    }
-    
-    .first-row {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        padding: 20px;
-        margin-bottom: 32px;
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
     }
 
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: #e74c3c;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+        padding: 4rem 0;
+        border-radius: 10px;
+        margin-bottom: 3rem;
+    }
+
+    /* Boxer Cards */
+    .boxer-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .boxer-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .boxer-image {
+        height: 250px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .boxer-info {
+        padding: 1.5rem;
+    }
+
+    .boxer-info h3 {
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+
+    .stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat {
+        background: #f8f9fa;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .weight-class {
+        color: #e74c3c;
+        font-weight: 600;
+    }
+
+    /* Fights Timeline */
+    .fights-timeline {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .fight-card {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .fight-card:last-child {
+        border-bottom: none;
+    }
+
+    .fight-date {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .fight-details {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .fighter {
+        flex: 1;
+        font-weight: 600;
+    }
+
+    .fighter-winner {
+        color: #27ae60;
+    }
+
+    .vs {
+        color: #666;
+    }
+
+    .result {
+        background: #f8f9fa;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Stats Cards */
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        height: 100%;
+    }
+
+    .stats-card h3 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+        margin-bottom: 1rem;
+    }
+
+    .stat-item .name {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .progress {
+        height: 8px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #e74c3c;
+        height: 100%;
+    }
+
+    /* Events List */
+    .events-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .event-item {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .event-date {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .event-title {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.3rem;
+    }
+
+    .event-fighters {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-        .section-title {
-            margin-top: 40px;
-            font-size: 1.3em;
+        .hero-section {
+            padding: 2rem 0;
         }
-        .first-row {
-            padding: 12px;
-            margin-bottom: 40px;
+
+        .boxer-image {
+            height: 200px;
+        }
+
+        .fight-details {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .stats {
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container-fluid {
+            padding: 1rem;
+        }
+
+        .boxer-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-card {
+            margin-bottom: 1.5rem;
         }
     }
 </style>

@@ -1,5 +1,34 @@
 class MainController < ApplicationController
     def index
+        # Featured Boxers: 3 random boxers with a nickname
+        @featured_boxers = Boxer.includes(:boxer_record)
+            .where.not(nickname: [nil, ''])
+            .order(Arel.sql('RANDOM()'))
+            .limit(3)
+
+        # Recent Fights: 3 most recent occurred fights
+        @recent_fights = Fight.includes(:boxer_a, :boxer_b)
+            .where(status: 'occurred')
+            .order(fight_date: :desc, created_at: :desc)
+            .limit(3)
+
+        # Top Knockout Artists: 3 boxers with most knockout wins
+        @top_ko_boxers = Boxer.joins(:boxer_record)
+            .select('boxers.*, boxer_records.knockout_wins')
+            .order('boxer_records.knockout_wins DESC NULLS LAST')
+            .limit(3)
+
+        # Upcoming Events: 3 soonest scheduled fights
+        @upcoming_fights = Fight.includes(:boxer_a, :boxer_b)
+            .where(status: 'scheduled')
+            .order(fight_date: :asc, created_at: :asc)
+            .limit(3)
+
+        # Ensure arrays for empty states
+        @featured_boxers ||= []
+        @recent_fights ||= []
+        @top_ko_boxers ||= []
+        @upcoming_fights ||= []
     end
 
     def sign_up

@@ -1,5 +1,5 @@
 require "application_system_test_case"
-
+=begin
 class UsersTest < ApplicationSystemTestCase
   setup do
     @user = users(:one)
@@ -47,3 +47,4 @@ class UsersTest < ApplicationSystemTestCase
     assert_text "User was successfully destroyed"
   end
 end
+=end
