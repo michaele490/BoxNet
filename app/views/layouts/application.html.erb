@@ -73,19 +73,6 @@
                 <%= link_to "Sign Out", destroy_coach_session_path, method: :delete, class: "navbar-link account-options" %>
               </div>
             </div>
-          
-          <% elsif spectator_signed_in? %>
-            <div class="dropdown account-dropdown">
-              <button class="navbar-button account dropdown-toggle">
-                <%= current_spectator.full_name %>
-              </button>
-              <div class="dropdown-content account-dropdown-content">
-                <%= link_to "Profile", '#', class: "navbar-link account-options" %>
-                <%= link_to "Predictions", '#', class: "navbar-link account-options" %>
-                <%= link_to "Edit", '#', class: "navbar-link account-options" %>
-                <%= link_to "Sign Out", destroy_spectator_session_path, method: :delete, class: "navbar-link account-options" %>
-              </div>
-            </div>
             
           <% elsif editor_signed_in? %>
             <div class="dropdown account-dropdown">

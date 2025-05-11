@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :editors
-  devise_for :spectators
+  #devise_for :spectators
   devise_for :coaches
   devise_for :boxers, controllers: { registrations: 'boxers/registrations' }
 
@@ -48,9 +48,11 @@ Rails.application.routes.draw do
   devise_scope :coach do
     get "/coaches/sign_out" => "devise/sessions#destroy"
   end
+=begin
   devise_scope :spectator do
     get "/spectators/sign_out" => "devise/sessions#destroy"
   end
+=end
   devise_scope :editor do
     get "/editors/sign_out" => "devise/sessions#destroy"
   end

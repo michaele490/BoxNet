@@ -20,9 +20,6 @@ class ApplicationController < ActionController::Base
     elsif devise_resource_class == Editor
       editor_keys = general_keys # Add extra editor variables later
       devise_parameter_sanitizer.permit(:account_update, keys: editor_keys)
-    elsif devise_resource_class == Spectator
-      spectator_keys = general_keys # Add extra spectator keys later
-      devise_parameter_sanitizer.permit(:account_update, keys: spectator_keys)
     end
   end
 
