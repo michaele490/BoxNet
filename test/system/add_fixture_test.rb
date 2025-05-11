@@ -32,13 +32,13 @@ class AddFixtureTest < ApplicationSystemTestCase
 
     # Wait for boxer1-input to be enabled
     find("#boxer1-input:not([disabled])", visible: true)
-    fill_in "boxer1-input", with: "Terence Crawford"
+    fill_in "boxe1-input", with: "Terence Crawford"
     find('#boxer1-input').send_keys(:down, :enter)
     sleep 15
 
     # Wait for boxer2-input to be enabled
     take_screenshot # See the state before waiting for boxer2
-    find("#boxer2-input:not([disabled])", visible: true, wait: 15)
+    find("#boxer2-input:not([disabled])", visible: true)
     fill_in "boxer2-input", with: "Saul Alvarez"
     find('#boxer2-input').send_keys(:down, :enter)
 
